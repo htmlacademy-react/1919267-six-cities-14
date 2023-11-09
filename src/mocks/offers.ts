@@ -1,6 +1,6 @@
 import { Offer } from '../types/offer';
 
-const OFFERS: Offer[] = [
+const offers: Offer[] = [
   {
     city: {
       name: 'Dusseldorf',
@@ -28,7 +28,7 @@ const OFFERS: Offer[] = [
       'https://14.react.pages.academy/static/offer/5.jpg'
     ],
     title: 'Waterfront with extraordinary view',
-    isFavorite: false,
+    isFavorite: true,
     isPremium: false,
     rating: 4.8,
     type: 'room',
@@ -80,7 +80,7 @@ const OFFERS: Offer[] = [
       'https://14.react.pages.academy/static/offer/13.jpg'
     ],
     title: 'House in countryside',
-    isFavorite: false,
+    isFavorite: true,
     isPremium: false,
     rating: 2.8,
     type: 'room',
@@ -133,7 +133,7 @@ const OFFERS: Offer[] = [
       'https://14.react.pages.academy/static/offer/12.jpg'
     ],
     title: 'Loft Studio in the Central Area',
-    isFavorite: false,
+    isFavorite: true,
     isPremium: false,
     rating: 2.9,
     type: 'room',
@@ -247,7 +247,7 @@ const OFFERS: Offer[] = [
       'https://14.react.pages.academy/static/offer/1.jpg'
     ],
     title: 'The house among olive ',
-    isFavorite: false,
+    isFavorite: true,
     isPremium: false,
     rating: 4.4,
     type: 'house',
@@ -304,7 +304,7 @@ const OFFERS: Offer[] = [
       'https://14.react.pages.academy/static/offer/13.jpg'
     ],
     title: 'Waterfront with extraordinary view',
-    isFavorite: false,
+    isFavorite: true,
     isPremium: false,
     rating: 4.3,
     type: 'house',
@@ -5342,4 +5342,4 @@ const OFFERS: Offer[] = [
   }
 ];
 
-export {OFFERS};
+export {offers};

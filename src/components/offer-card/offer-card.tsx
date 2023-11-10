@@ -10,15 +10,28 @@ type OfferCardProps = {
   offer: Offer;
   block: string;
   size?: Size;
+  onCardHover?: (offerId: Offer['id'] | null) => void;
 }
 
 function getImageSize (size: Size) {
   return size === 'small' ? {width: '150', height: '110'} : {width: '260', height: '200'};
 }
 
-function OfferCard({offer, block, size = 'large'}: OfferCardProps): JSX.Element {
+function OfferCard({offer, block, size = 'large', onCardHover}: OfferCardProps): JSX.Element {
+  function handleMouseEnter () {
+    onCardHover?.(offer.id);
+  }
+
+  function handleMouseLeave () {
+    onCardHover?.(null);
+  }
+
   return (
-    <article className={`${block}__card place-card`}>
+    <article
+      className={`${block}__card place-card`}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
       <div className={offer.isPremium ? 'place-card__mark' : 'visually-hidden'}>
         <span>{offer.isPremium ? 'Premium' : null}</span>
       </div>

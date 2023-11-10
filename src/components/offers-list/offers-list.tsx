@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { City } from '../../types/city';
 import { Offer } from '../../types/offer';
 import { addPluralEnding } from '../../utils/common';
@@ -9,6 +10,12 @@ type OffersListProps = {
 }
 
 function OffersList ({currentOffers, currentLocation}: OffersListProps): JSX.Element {
+  const [hoveredOfferId, setHoveredOfferId] = useState<Offer['id'] | null>(null);
+
+  function handleCardHover (offerId: Offer['id'] | null) {
+    setHoveredOfferId(offerId);
+  }
+
   return (
     <div className="cities__places-container container">
       <section className="cities__places places">
@@ -35,6 +42,7 @@ function OffersList ({currentOffers, currentLocation}: OffersListProps): JSX.Ele
               key={offer.id}
               offer={offer}
               block="cities"
+              onCardHover={handleCardHover}
             />
           ))}
         </div>

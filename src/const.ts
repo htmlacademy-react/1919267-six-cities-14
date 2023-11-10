@@ -71,4 +71,7 @@ const CITIES: City[] = [
 
 const DEFAULT_CITY = CITIES[3];
 
-export{Settings, AppRoute, AuthorizationStatus, CITIES, DEFAULT_CITY};
+const MIN_COMMENT_LENGTH = 50;
+const MAX_COMMENT_LENGTH = 300;
+
+export{Settings, AppRoute, AuthorizationStatus, CITIES, DEFAULT_CITY, MAX_COMMENT_LENGTH, MIN_COMMENT_LENGTH};

@@ -2,16 +2,19 @@ import { AppRoute, AuthorizationStatus } from '../../const';
 import FavoritesPage from '../../pages/favorites-page/favorites-page';
 import LoginPage from '../../pages/login-page/login-page';
 import MainPage from '../../pages/main-page/main-page';
+import OfferPage from '../../pages/offer-page/offer-page';
 import NotFoundPage from '../../pages/not-found-page/not-found-page';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import PrivateRoute from '../private-route/private-route';
 import { HelmetProvider } from 'react-helmet-async';
+import { Offer } from '../../types/offer';
+import { CITIES } from '../../const';
 
 type AppProps = {
-  placesCount: number;
+  offers: Offer[];
 }
 
-function App(props: AppProps): JSX.Element {
+function App({offers}: AppProps): JSX.Element {
   return (
     <HelmetProvider>
       <BrowserRouter>
@@ -19,16 +22,20 @@ function App(props: AppProps): JSX.Element {
           <Route
             path={AppRoute.Root}
           >
-            <Route index element={<MainPage {...props}/>}/>
+            <Route index element={<MainPage offers={offers} locations={CITIES}/>}/>
             <Route
               path={AppRoute.Login}
               element={<LoginPage/>}
             />
             <Route
+              path={`${AppRoute.Offer}/:offerId`}
+              element={<OfferPage offers={offers}/>}
+            />
+            <Route
               path={AppRoute.Favorites}
               element={
-                <PrivateRoute authorizationStatus={AuthorizationStatus.NoAuth}>
-                  <FavoritesPage />
+                <PrivateRoute authorizationStatus={AuthorizationStatus.Auth}>
+                  <FavoritesPage offers={offers}/>
                 </PrivateRoute>
               }
             />

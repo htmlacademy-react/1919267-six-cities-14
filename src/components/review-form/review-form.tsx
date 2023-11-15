@@ -1,4 +1,4 @@
-import { ChangeEvent, Fragment, SyntheticEvent, useState } from 'react';
+import { ChangeEvent, Fragment, useState } from 'react';
 import { MAX_COMMENT_LENGTH, MIN_COMMENT_LENGTH } from '../../const';
 
 const ratingMap = {

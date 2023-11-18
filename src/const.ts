@@ -22,49 +22,49 @@ const CITIES: City[] = [
   {
     name: 'Paris',
     location: {
-      latitude: 48.8567801,
-      longitude: 2.3315211,
-      zoom: 10,
+      latitude: 48.85661,
+      longitude: 2.351499,
+      zoom: 13
     }
   },
   {
     name: 'Cologne',
     location: {
-      latitude: 50.9461149,
-      longitude: 6.9415238,
-      zoom: 10,
+      latitude: 50.938361,
+      longitude: 6.959974,
+      zoom: 13
     }
   },
   {
     name: 'Brussels',
     location: {
-      latitude: 50.8552034,
-      longitude: 4.2930173,
-      zoom: 10,
+      latitude: 50.846557,
+      longitude: 4.351697,
+      zoom: 13
     }
   },
   {
     name: 'Amsterdam',
     location: {
-      latitude: 52.3547607,
-      longitude: 4.7391566,
-      zoom: 10,
+      latitude: 52.37454,
+      longitude: 4.897976,
+      zoom: 12,
     }
   },
   {
     name: 'Hamburg',
     location: {
-      latitude: 53.5586627,
-      longitude: 9.7630179,
-      zoom: 10,
+      latitude: 53.550341,
+      longitude: 10.000654,
+      zoom: 13
     }
   },
   {
     name: 'Dusseldorf',
     location: {
-      latitude: 51.238554,
-      longitude: 6.6495462,
-      zoom: 10,
+      latitude: 51.225402,
+      longitude: 6.776314,
+      zoom: 13
     }
   },
 ];
@@ -73,5 +73,8 @@ const DEFAULT_CITY = CITIES[3];
 
 const MIN_COMMENT_LENGTH = 50;
 const MAX_COMMENT_LENGTH = 300;
+const URL_MARKER_DEFAULT = 'img/pin.svg';
 
-export{Settings, AppRoute, AuthorizationStatus, CITIES, DEFAULT_CITY, MAX_COMMENT_LENGTH, MIN_COMMENT_LENGTH};
+const URL_MARKER_CURRENT = 'img/pin-active.svg';
+
+export{Settings, AppRoute, AuthorizationStatus, CITIES, DEFAULT_CITY, MAX_COMMENT_LENGTH, MIN_COMMENT_LENGTH, URL_MARKER_CURRENT, URL_MARKER_DEFAULT};

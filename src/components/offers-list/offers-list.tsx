@@ -1,8 +1,9 @@
-// import { useState } from 'react';
+import { useState } from 'react';
 import { City } from '../../types/city';
 import { Offer } from '../../types/offer';
 import { addPluralEnding } from '../../utils/common';
 import OfferCard from '../offer-card/offer-card';
+import Map from '../map/map';
 
 type OffersListProps = {
   currentLocation: City;
@@ -10,11 +11,11 @@ type OffersListProps = {
 }
 
 function OffersList ({currentOffers, currentLocation}: OffersListProps): JSX.Element {
-  // const [hoveredOfferId, setHoveredOfferId] = useState<Offer['id'] | null>(null);
+  const [selectedOfferCardId, setSelectedOfferCardId] = useState<number | null>(null);
 
-  // function handleCardHover (offerId: Offer['id'] | null) {
-  //   setHoveredOfferId(offerId);
-  // }
+  const handleCardHover = (offerId: number | null) => {
+    setSelectedOfferCardId(offerId);
+  };
 
   return (
     <div className="cities__places-container container">
@@ -42,13 +43,13 @@ function OffersList ({currentOffers, currentLocation}: OffersListProps): JSX.Ele
               key={offer.id}
               offer={offer}
               block="cities"
-              //onCardHover={handleCardHover}
+              onCardHover={handleCardHover}
             />
           ))}
         </div>
       </section>
       <div className="cities__right-section">
-        <section className="cities__map map"></section>
+        <Map offers={currentOffers} city={currentLocation} hoveredOfferId={selectedOfferCardId} className={'cities__map'} />
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
-import NearbyPlaceItem from '../nearby-place-item/nearby-place-item';
 import { Offer } from '../../types/offer';
+import OfferCard from '../offer-card/offer-card';
 
 type NearbyPlacesProps = {
   nearbyPlaces: Offer[];
@@ -12,7 +12,7 @@ function NearbyPlaces({nearbyPlaces, setChosenCard}: NearbyPlacesProps): JSX.Ele
       <section className="near-places places">
         <h2 className="near-places__title">Other places in the neighborhood</h2>
         <div className="near-places__list places__list">
-          {nearbyPlaces.map((place)=> (<NearbyPlaceItem key={place.id} place={place} onCardHover={() => setChosenCard(place.id)} onCardLeave={()=> setChosenCard(null)}/>))}
+          {nearbyPlaces.map((place)=> (<OfferCard key={place.id} block={'near-places'} offer={place} onCardHover={() => setChosenCard(place.id)} />))}
         </div>
       </section>
     </div>

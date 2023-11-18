@@ -15,7 +15,7 @@ type MainPageProps = {
 }
 
 function MainPage({offers, locations}: MainPageProps): JSX.Element {
-  const [currentLocation, setCurrentLocation] = useState(DEFAULT_CITY);
+  const [currentLocation, setCurrentLocation] = useState<City>(DEFAULT_CITY);
   const currentOffers = offers.filter((offer) => offer.city.name === currentLocation.name);
   const isActive = (item: City) => item.name === currentLocation.name ? 'tabs__item--active' : '';
 

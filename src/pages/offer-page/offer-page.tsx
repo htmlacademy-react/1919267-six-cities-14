@@ -6,6 +6,7 @@ import { AppRoute } from '../../const';
 import { addPluralEnding, capitalizeFirstLetter } from '../../utils/common';
 import { getRatingWidth } from '../../utils/offer';
 import ReviewForm from '../../components/review-form/review-form';
+import Map from '../../components/map/map';
 
 type OfferPageProps = {
   offers: Offer[];
@@ -140,7 +141,7 @@ function OfferPage({offers}: OfferPageProps): JSX.Element {
               </section>
             </div>
           </div>
-          <section className="offer__map map"></section>
+          <Map city={offer.city} offers={offers} hoveredOfferId={offer.id} className='offer__map'/>
         </section>
         <div className="container">
           <section className="near-places places">

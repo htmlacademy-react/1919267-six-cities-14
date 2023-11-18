@@ -9,6 +9,7 @@ import PrivateRoute from '../private-route/private-route';
 import { HelmetProvider } from 'react-helmet-async';
 import { Offer } from '../../types/offer';
 import { CITIES } from '../../const';
+import { reviews } from '../../mocks/reviews';
 
 type AppProps = {
   offers: Offer[];
@@ -29,7 +30,7 @@ function App({offers}: AppProps): JSX.Element {
             />
             <Route
               path={`${AppRoute.Offer}/:offerId`}
-              element={<OfferPage offers={offers}/>}
+              element={<OfferPage offers={offers} reviews={reviews}/>}
             />
             <Route
               path={AppRoute.Favorites}

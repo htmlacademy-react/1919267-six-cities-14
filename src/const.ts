@@ -73,8 +73,17 @@ const DEFAULT_CITY = CITIES[3];
 
 const MIN_COMMENT_LENGTH = 50;
 const MAX_COMMENT_LENGTH = 300;
-const URL_MARKER_DEFAULT = 'img/pin.svg';
 
+const URL_MARKER_DEFAULT = 'img/pin.svg';
 const URL_MARKER_CURRENT = 'img/pin-active.svg';
 
-export{Settings, AppRoute, AuthorizationStatus, CITIES, DEFAULT_CITY, MAX_COMMENT_LENGTH, MIN_COMMENT_LENGTH, URL_MARKER_CURRENT, URL_MARKER_DEFAULT};
+const SortingMap = {
+  Popular: 'Popular',
+  LowToHigh: 'Price: low to high',
+  HighToLow: 'Price: high to low',
+  TopRating: 'Top rated first'
+} as const;
+
+const DEFAULT_SORTING_OPTION = SortingMap['Popular'];
+
+export{Settings, AppRoute, AuthorizationStatus, CITIES, DEFAULT_CITY, MAX_COMMENT_LENGTH, MIN_COMMENT_LENGTH, URL_MARKER_CURRENT, URL_MARKER_DEFAULT, SortingMap, DEFAULT_SORTING_OPTION};

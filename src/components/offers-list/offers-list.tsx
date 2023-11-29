@@ -16,7 +16,7 @@ type OffersListProps = {
 function OffersList ({currentOffers, currentLocation}: OffersListProps): JSX.Element {
   const [selectedOfferCardId, setSelectedOfferCardId] = useState<number | null>(null);
   const [activeSorting, setActiveSorting] = useState<TSorting>(DEFAULT_SORTING_OPTION);
-  const locationForMap = currentOffers[0].city.location;
+  const locationForMap = currentOffers[0].city;
 
   function handleCardHover (offerId: number | null) {
     setSelectedOfferCardId(offerId);
@@ -46,7 +46,7 @@ function OffersList ({currentOffers, currentLocation}: OffersListProps): JSX.Ele
         </div>
       </section>
       <div className="cities__right-section">
-        <Map offers={currentOffers} location={locationForMap} hoveredOfferId={selectedOfferCardId} className={'cities__map'} />
+        <Map offers={currentOffers} city={locationForMap} hoveredOfferId={selectedOfferCardId} className={'cities__map'} />
       </div>
     </div>
   );

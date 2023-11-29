@@ -1,13 +1,13 @@
 import {useRef, useEffect} from 'react';
 import {Icon, layerGroup, marker} from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { Location } from '../../types/location';
+import { City } from '../../types/city';
 import { Offer } from '../../types/offer';
 import useMap from '../../hooks/use-map';
 import { URL_MARKER_DEFAULT, URL_MARKER_CURRENT } from '../../const';
 
 type MapProps = {
-  location: Location;
+  city: City;
   offers: Offer[];
   hoveredOfferId: Offer['id'] | null;
   className: string;
@@ -25,10 +25,10 @@ const currentCustomIcon = new Icon({
   iconAnchor: [20, 40]
 });
 
-function Map({location, offers, hoveredOfferId, className}: MapProps): JSX.Element {
+function Map({city, offers, hoveredOfferId, className}: MapProps): JSX.Element {
 
   const mapRef = useRef<HTMLElement>(null);
-  const map = useMap(mapRef, location);
+  const map = useMap(mapRef, city);
 
   useEffect(() => {
     if (map) {
@@ -41,17 +41,17 @@ function Map({location, offers, hoveredOfferId, className}: MapProps): JSX.Eleme
 
       map.flyTo(
         [
-          location.latitude,
-          location.longitude,
+          city.location.latitude,
+          city.location.longitude,
         ],
-        location.zoom
+        city.location.zoom
       );
 
       return () => {
         map.removeLayer(markerLayer);
       };
     }
-  }, [map, location, offers, hoveredOfferId]);
+  }, [map, city, offers, hoveredOfferId]);
 
   return (
     <section

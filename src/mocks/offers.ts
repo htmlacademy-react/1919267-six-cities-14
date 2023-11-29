@@ -1,6 +1,6 @@
 import { Offer } from '../types/offer';
 
-const offers: Offer[] = [
+const mockOffers: Offer[] = [
   {
     city: {
       name: 'Dusseldorf',
@@ -5342,4 +5342,4 @@ const offers: Offer[] = [
   }
 ];
 
-export {offers};
+export {mockOffers};

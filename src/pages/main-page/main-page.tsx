@@ -1,23 +1,18 @@
 import { Helmet } from 'react-helmet-async';
 import Header from '../../components/header/header';
 import { Offer } from '../../types/offer';
-import { City } from '../../types/city';
-import { DEFAULT_CITY } from '../../const';
-import { NavLink } from 'react-router-dom';
-import { AppRoute } from '../../const';
-import { SyntheticEvent, useState } from 'react';
+import LocationsList from '../../components/locations-list/locations-list';
 import OffersList from '../../components/offers-list/offers-list';
 import NoOffers from '../../components/no-offers/no-offers';
+import { useAppSelector } from '../../hooks';
 
 type MainPageProps = {
   offers: Offer[];
-  locations: City[];
 }
 
-function MainPage({offers, locations}: MainPageProps): JSX.Element {
-  const [currentLocation, setCurrentLocation] = useState<City>(DEFAULT_CITY);
-  const currentOffers = offers.filter((offer) => offer.city.name === currentLocation.name);
-  const isActive = (item: City) => item.name === currentLocation.name ? 'tabs__item--active' : '';
+function MainPage({offers}: MainPageProps): JSX.Element {
+  const currentLocation = useAppSelector((state) => state.currentCity);
+  const currentOffers = offers.filter((offer) => offer.city.name === currentLocation);
 
   return (
     <div className="page page--gray page--main">
@@ -29,23 +24,7 @@ function MainPage({offers, locations}: MainPageProps): JSX.Element {
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
           <section className="locations container">
-            <ul className="locations__list tabs__list">
-              {
-                locations.map((item) => (
-                  <li key={item.name} className="locations__item">
-                    <NavLink
-                      className={`locations__item-link tabs__item ${isActive(item)}`}
-                      to={AppRoute.Root}
-                      onClick={(evt: SyntheticEvent) => {
-                        evt.preventDefault();
-                        setCurrentLocation(item);
-                      }}
-                    >
-                      <span>{item.name}</span>
-                    </NavLink>
-                  </li>))
-              }
-            </ul>
+            <LocationsList />
           </section>
         </div>
         <div className="cities">

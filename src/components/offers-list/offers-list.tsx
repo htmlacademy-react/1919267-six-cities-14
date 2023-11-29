@@ -1,22 +1,22 @@
 import { useState } from 'react';
-import { City } from '../../types/city';
 import { Offer } from '../../types/offer';
 import { TSorting } from '../../types/sorting';
 import { addPluralEnding } from '../../utils/common';
 import OfferCard from '../offer-card/offer-card';
 import Map from '../map/map';
 import Sorting from '../sorting/sorting';
-import { DEFAULT_SORTING_OPTION } from '../../const';
+import { Cities, DEFAULT_SORTING_OPTION } from '../../const';
 import { sorting } from '../../utils/offer';
 
 type OffersListProps = {
-  currentLocation: City;
+  currentLocation: keyof typeof Cities;
   currentOffers: Offer[];
 }
 
 function OffersList ({currentOffers, currentLocation}: OffersListProps): JSX.Element {
   const [selectedOfferCardId, setSelectedOfferCardId] = useState<number | null>(null);
   const [activeSorting, setActiveSorting] = useState<TSorting>(DEFAULT_SORTING_OPTION);
+  const locationForMap = currentOffers[0].city.location;
 
   function handleCardHover (offerId: number | null) {
     setSelectedOfferCardId(offerId);
@@ -32,7 +32,7 @@ function OffersList ({currentOffers, currentLocation}: OffersListProps): JSX.Ele
     <div className="cities__places-container container">
       <section className="cities__places places">
         <h2 className="visually-hidden">Places</h2>
-        <b className="places__found">{currentOffers.length} place{addPluralEnding(currentOffers.length)} to stay in {currentLocation.name}</b>
+        <b className="places__found">{currentOffers.length} place{addPluralEnding(currentOffers.length)} to stay in {currentLocation}</b>
         <Sorting activeSorting={activeSorting} onSortingOptionClick={handleSortingChange}/>
         <div className="cities__places-list places__list tabs__content">
           {sortedOffers.map((offer) => (
@@ -46,7 +46,7 @@ function OffersList ({currentOffers, currentLocation}: OffersListProps): JSX.Ele
         </div>
       </section>
       <div className="cities__right-section">
-        <Map offers={currentOffers} city={currentLocation} hoveredOfferId={selectedOfferCardId} className={'cities__map'} />
+        <Map offers={currentOffers} location={locationForMap} hoveredOfferId={selectedOfferCardId} className={'cities__map'} />
       </div>
     </div>
   );

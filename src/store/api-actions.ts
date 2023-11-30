@@ -4,9 +4,10 @@ import { AxiosInstance } from 'axios';
 import { Offer } from '../types/offer';
 import { AuthData } from '../types/auth-data';
 import { UserData } from '../types/user-data';
-import { APIRoute, AuthorizationStatus } from '../const';
-import { setFavoriteOffers, setOffers, requireAuthorization } from './action';
+import { APIRoute, AuthorizationStatus, TIMEOUT_SHOW_ERROR } from '../const';
+import { setFavoriteOffers, setOffers, requireAuthorization, setError } from './action';
 import { setToken, dropToken } from '../services/token';
+import { store } from './';
 
 export const fetchOffers = createAsyncThunk<
   void,
@@ -78,3 +79,12 @@ export const logoutAction = createAsyncThunk<void, undefined, {
   },
 );
 
+export const clearError = createAsyncThunk(
+  'app/clearError',
+  () => {
+    setTimeout(
+      () => store.dispatch(setError(null)),
+      TIMEOUT_SHOW_ERROR
+    );
+  }
+);

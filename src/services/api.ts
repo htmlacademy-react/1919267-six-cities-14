@@ -1,8 +1,23 @@
-import axios, {AxiosInstance} from 'axios';
+import axios, {AxiosError, AxiosInstance, AxiosResponse} from 'axios';
+import { StatusCodes } from 'http-status-codes';
 import { getToken } from './token';
+import { processErrorHandle } from './process-error-handle';
 
 const BACKEND_URL = 'https://14.design.pages.academy/six-cities';
 const REQUEST_TIMEOUT = 5000;
+
+type DetailMessageType = {
+  type: string;
+  message: string;
+}
+
+const StatusCodeMapping: Record<number, boolean> = {
+  [StatusCodes.BAD_REQUEST]: true,
+  [StatusCodes.UNAUTHORIZED]: true,
+  [StatusCodes.NOT_FOUND]: true
+};
+
+const shouldDisplayError = (response: AxiosResponse) => !!StatusCodeMapping[response.status];
 
 export const createApi = (): AxiosInstance => {
   const api = axios.create({
@@ -20,6 +35,17 @@ export const createApi = (): AxiosInstance => {
 
       return config;
     },
+  );
+
+  api.interceptors.response.use(
+    (response) => response,
+    (error: AxiosError<DetailMessageType>) => {
+      if (error.response && shouldDisplayError(error.response)) {
+        processErrorHandle(error.response.data.message);
+      }
+
+      throw Error;
+    }
   );
 
   return api;

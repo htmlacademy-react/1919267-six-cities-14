@@ -14,4 +14,5 @@ export type OffersDataType = {
   currentCity: CityName;
   isLoading: boolean;
   authorizationStatus: AuthorizationStatus;
+  error: string | null;
 };

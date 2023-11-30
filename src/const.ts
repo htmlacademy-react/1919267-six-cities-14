@@ -51,6 +51,8 @@ enum APIRoute {
   Favorite = '/favorite'
 }
 
+const TIMEOUT_SHOW_ERROR = 2000;
+
 export{
   Settings,
   AppRoute,
@@ -63,5 +65,6 @@ export{
   URL_MARKER_DEFAULT,
   SortingMap,
   DEFAULT_SORTING_OPTION,
-  APIRoute
+  APIRoute,
+  TIMEOUT_SHOW_ERROR
 };

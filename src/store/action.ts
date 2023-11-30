@@ -18,3 +18,7 @@ export const setCurrentCity = createAction('offers/setCurrentCity', (currentCity
 export const requireAuthorization = createAction('user/checkAuth', (authStatus: AuthorizationStatus) => ({
   payload: authStatus
 }));
+
+export const setError = createAction('app/setError', (error: string | null) => ({
+  payload: error
+}));

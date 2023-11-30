@@ -42,6 +42,15 @@ const SortingMap = {
 
 const DEFAULT_SORTING_OPTION = SortingMap['Popular'];
 
+enum APIRoute {
+  Offers = '/offers',
+  Login = '/login',
+  Logout = '/logout',
+  Reviews = '/comments',
+  NearbyOffers = '/nearby',
+  Favorite = '/favorite'
+}
+
 export{
   Settings,
   AppRoute,
@@ -53,5 +62,6 @@ export{
   URL_MARKER_CURRENT,
   URL_MARKER_DEFAULT,
   SortingMap,
-  DEFAULT_SORTING_OPTION
+  DEFAULT_SORTING_OPTION,
+  APIRoute
 };

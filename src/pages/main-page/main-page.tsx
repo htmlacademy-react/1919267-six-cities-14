@@ -6,6 +6,8 @@ import OffersList from '../../components/offers-list/offers-list';
 import NoOffers from '../../components/no-offers/no-offers';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchOffers } from '../../store/api-actions';
+import Loading from '../../components/loading/loading';
+import { AuthorizationStatus } from '../../const';
 
 
 function MainPage(): JSX.Element {
@@ -18,6 +20,12 @@ function MainPage(): JSX.Element {
   const currentLocation = useAppSelector((state) => state.currentCity);
   const offers = useAppSelector((state) => state.offers);
   const currentOffers = offers.filter((offer) => offer.city.name === currentLocation);
+  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
+  const isLoading = useAppSelector((state) => state.isLoading);
+
+  if (authorizationStatus === AuthorizationStatus.Unknown || isLoading) {
+    return <Loading />;
+  }
 
   return (
     <div className="page page--gray page--main">

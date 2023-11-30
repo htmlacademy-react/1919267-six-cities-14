@@ -1,4 +1,4 @@
-import { AppRoute, AuthorizationStatus } from '../../const';
+import { AppRoute } from '../../const';
 import FavoritesPage from '../../pages/favorites-page/favorites-page';
 import LoginPage from '../../pages/login-page/login-page';
 import MainPage from '../../pages/main-page/main-page';
@@ -11,7 +11,6 @@ import { reviews } from '../../mocks/reviews';
 import { nearbyOffers } from '../../mocks/nearby-offers';
 
 function App(): JSX.Element {
-
   return (
     <HelmetProvider>
       <BrowserRouter>

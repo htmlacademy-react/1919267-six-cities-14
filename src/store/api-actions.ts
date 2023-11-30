@@ -5,7 +5,7 @@ import { Offer } from '../types/offer';
 import { AuthData } from '../types/auth-data';
 import { UserData } from '../types/user-data';
 import { APIRoute, AuthorizationStatus, TIMEOUT_SHOW_ERROR } from '../const';
-import { setFavoriteOffers, setOffers, requireAuthorization, setError } from './action';
+import { setFavoriteOffers, setOffers, requireAuthorization, setError, setLoadingStatus } from './action';
 import { setToken, dropToken } from '../services/token';
 import { store } from './';
 
@@ -20,7 +20,9 @@ export const fetchOffers = createAsyncThunk<
   >(
     'offers/fetchOffers',
     async (_arg, {dispatch, extra: api}) => {
+      dispatch(setLoadingStatus(true));
       const {data} = await api.get<Offer[]>(APIRoute.Offers);
+      dispatch(setLoadingStatus(false));
       dispatch(setOffers(data));
     }
   );

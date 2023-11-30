@@ -22,3 +22,7 @@ export const requireAuthorization = createAction('user/checkAuth', (authStatus: 
 export const setError = createAction('app/setError', (error: string | null) => ({
   payload: error
 }));
+
+export const setLoadingStatus = createAction('app/setLoadingStatus', (loadingStatus: boolean) => ({
+  payload: loadingStatus
+}));

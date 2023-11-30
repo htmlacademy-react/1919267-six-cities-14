@@ -2,10 +2,9 @@ import Header from '../../components/header/header';
 import { Helmet } from 'react-helmet-async';
 import PlaceCard from '../../components/offer-card/offer-card';
 import { Offer } from '../../types/offer';
-
-type FavoritesPageProps = {
-  offers: Offer[];
-}
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { useEffect } from 'react';
+import { fetchFavoriteOffers } from '../../store/api-actions';
 
 function getFavoritesByLocation (items: Offer[]) {
   return items.reduce<{ [key: string]: Offer[] }>((acc, current) => {
@@ -19,9 +18,17 @@ function getFavoritesByLocation (items: Offer[]) {
   }, {});
 }
 
-function FavoritesPage({offers}: FavoritesPageProps): JSX.Element {
-  const favorites = offers.filter((item) => item.isFavorite);
+function FavoritesPage(): JSX.Element {
+  const dispatch = useAppDispatch();
+  const favorites = useAppSelector((state) => state.favoriteOffers);
   const favoritesByLocation = getFavoritesByLocation(favorites);
+
+  useEffect(() => {
+    if(favorites.length === 0) {
+      dispatch(fetchFavoriteOffers());
+    }
+  },
+  [dispatch, favorites]);
 
   return (
     <div className="page">

@@ -11,16 +11,17 @@ import Map from '../../components/map/map';
 import { Review } from '../../types/review';
 import ReviewsList from '../../components/reviews-list/reviews-list';
 import NearbyPlaces from '../../components/nearby-places/nearby-places';
+import { useAppSelector } from '../../hooks';
 
 type OfferPageProps = {
-  offers: Offer[];
   reviews: Review[];
   nearbyOffers: Offer[];
 }
 
-function OfferPage({offers, reviews, nearbyOffers}: OfferPageProps): JSX.Element {
+function OfferPage({reviews, nearbyOffers}: OfferPageProps): JSX.Element {
   const [chosenCard, setChosenCard] = useState<number | null>(null);
   const {offerId} = useParams();
+  const offers = useAppSelector((state) => state.offers);
   const offer = offers.find((item) => item.id.toString() === offerId);
 
   if(!offer) {

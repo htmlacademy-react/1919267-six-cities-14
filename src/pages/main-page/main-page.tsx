@@ -1,18 +1,31 @@
+import { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import Header from '../../components/header/header';
-import { Offer } from '../../types/offer';
 import LocationsList from '../../components/locations-list/locations-list';
 import OffersList from '../../components/offers-list/offers-list';
 import NoOffers from '../../components/no-offers/no-offers';
-import { useAppSelector } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { fetchOffers } from '../../store/api-actions';
+import Loading from '../../components/loading/loading';
+import { AuthorizationStatus } from '../../const';
 
-type MainPageProps = {
-  offers: Offer[];
-}
 
-function MainPage({offers}: MainPageProps): JSX.Element {
+function MainPage(): JSX.Element {
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(fetchOffers());
+  }, [dispatch]);
+
   const currentLocation = useAppSelector((state) => state.currentCity);
+  const offers = useAppSelector((state) => state.offers);
   const currentOffers = offers.filter((offer) => offer.city.name === currentLocation);
+  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
+  const isLoading = useAppSelector((state) => state.isLoading);
+
+  if (authorizationStatus === AuthorizationStatus.Unknown || isLoading) {
+    return <Loading />;
+  }
 
   return (
     <div className="page page--gray page--main">

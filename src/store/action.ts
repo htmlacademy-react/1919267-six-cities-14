@@ -1,10 +1,28 @@
 import { createAction } from '@reduxjs/toolkit';
 import { CityName } from '../types/city-name';
 import { Offer } from '../types/offer';
+import { AuthorizationStatus } from '../const';
 
-export const setOffers = createAction('offers/change', (offers: Offer[]) => ({
+export const setOffers = createAction('offers/setOffers', (offers: Offer[]) => ({
   payload: offers
 }));
+
+export const setFavoriteOffers = createAction('offers/setFavoriteOffers', (favoriteOffers: Offer[]) => ({
+  payload: favoriteOffers
+}));
+
 export const setCurrentCity = createAction('offers/setCurrentCity', (currentCityName: CityName) => ({
   payload: currentCityName
+}));
+
+export const requireAuthorization = createAction('user/checkAuth', (authStatus: AuthorizationStatus) => ({
+  payload: authStatus
+}));
+
+export const setError = createAction('app/setError', (error: string | null) => ({
+  payload: error
+}));
+
+export const setLoadingStatus = createAction('app/setLoadingStatus', (loadingStatus: boolean) => ({
+  payload: loadingStatus
 }));

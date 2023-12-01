@@ -4,10 +4,9 @@ import { AxiosInstance } from 'axios';
 import { Offer } from '../types/offer';
 import { AuthData } from '../types/auth-data';
 import { UserData } from '../types/user-data';
-import { APIRoute, AppRoute, AuthorizationStatus, TIMEOUT_SHOW_ERROR } from '../const';
-import { setFavoriteOffers, setOffers, requireAuthorization, setError, setLoadingStatus, redirectToRoute } from './action';
+import { APIRoute, AppRoute, AuthorizationStatus } from '../const';
+import { setFavoriteOffers, setOffers, requireAuthorization, setLoadingStatus, redirectToRoute } from './action';
 import { setToken, dropToken } from '../services/token';
-import { store } from './';
 
 export const fetchOffers = createAsyncThunk<
   void,
@@ -82,14 +81,4 @@ export const logoutAction = createAsyncThunk<void, undefined, {
     dropToken();
     dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
   },
-);
-
-export const clearError = createAsyncThunk(
-  'app/clearError',
-  () => {
-    setTimeout(
-      () => store.dispatch(setError(null)),
-      TIMEOUT_SHOW_ERROR
-    );
-  }
 );

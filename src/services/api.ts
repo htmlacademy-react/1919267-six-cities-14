@@ -1,7 +1,8 @@
 import axios, {AxiosError, AxiosInstance, AxiosResponse} from 'axios';
 import { StatusCodes } from 'http-status-codes';
 import { getToken } from './token';
-import { processErrorHandle } from './process-error-handle';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const BACKEND_URL = 'https://14.design.pages.academy/six-cities';
 const REQUEST_TIMEOUT = 5000;
@@ -41,7 +42,7 @@ export const createApi = (): AxiosInstance => {
     (response) => response,
     (error: AxiosError<DetailMessageType>) => {
       if (error.response && shouldDisplayError(error.response)) {
-        processErrorHandle(error.response.data.message);
+        toast.warn(error.response.data.message);
       }
 
       throw Error;

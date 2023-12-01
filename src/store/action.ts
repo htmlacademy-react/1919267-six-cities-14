@@ -1,7 +1,7 @@
 import { createAction } from '@reduxjs/toolkit';
 import { CityName } from '../types/city-name';
 import { Offer } from '../types/offer';
-import { AuthorizationStatus } from '../const';
+import { AuthorizationStatus, AppRoute } from '../const';
 
 export const setOffers = createAction('offers/setOffers', (offers: Offer[]) => ({
   payload: offers
@@ -26,3 +26,5 @@ export const setError = createAction('app/setError', (error: string | null) => (
 export const setLoadingStatus = createAction('app/setLoadingStatus', (loadingStatus: boolean) => ({
   payload: loadingStatus
 }));
+
+export const redirectToRoute = createAction<AppRoute>('app/redirectToRoute');

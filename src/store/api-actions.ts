@@ -4,8 +4,8 @@ import { AxiosInstance } from 'axios';
 import { Offer } from '../types/offer';
 import { AuthData } from '../types/auth-data';
 import { UserData } from '../types/user-data';
-import { APIRoute, AuthorizationStatus, TIMEOUT_SHOW_ERROR } from '../const';
-import { setFavoriteOffers, setOffers, requireAuthorization, setError, setLoadingStatus } from './action';
+import { APIRoute, AppRoute, AuthorizationStatus, TIMEOUT_SHOW_ERROR } from '../const';
+import { setFavoriteOffers, setOffers, requireAuthorization, setError, setLoadingStatus, redirectToRoute } from './action';
 import { setToken, dropToken } from '../services/token';
 import { store } from './';
 
@@ -65,6 +65,9 @@ export const loginAction = createAsyncThunk<void, AuthData, {
     const {data: {token}} = await api.post<UserData>(APIRoute.Login, {email, password});
     setToken(token);
     dispatch(requireAuthorization(AuthorizationStatus.Auth));
+    dispatch(redirectToRoute(AppRoute.Root));
+    dispatch(fetchFavoriteOffers());
+    dispatch(fetchOffers());
   },
 );
 

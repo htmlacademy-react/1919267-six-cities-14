@@ -5,7 +5,7 @@ import { Offer } from '../types/offer';
 import { AuthData } from '../types/auth-data';
 import { UserData } from '../types/user-data';
 import { APIRoute, AppRoute, AuthorizationStatus } from '../const';
-import { setFavoriteOffers, setOffers, requireAuthorization, setLoadingStatus, redirectToRoute } from './action';
+import { setFavoriteOffers, setOffers, requireAuthorization, setLoadingStatus, redirectToRoute, setUserData } from './action';
 import { setToken, dropToken } from '../services/token';
 
 export const fetchOffers = createAsyncThunk<
@@ -61,8 +61,9 @@ export const loginAction = createAsyncThunk<void, AuthData, {
 }>(
   'user/login',
   async ({login: email, password}, {dispatch, extra: api}) => {
-    const {data: {token}} = await api.post<UserData>(APIRoute.Login, {email, password});
-    setToken(token);
+    const {data} = await api.post<UserData>(APIRoute.Login, {email, password});
+    setToken(data.token);
+    dispatch(setUserData(data));
     dispatch(requireAuthorization(AuthorizationStatus.Auth));
     dispatch(redirectToRoute(AppRoute.Root));
     dispatch(fetchFavoriteOffers());

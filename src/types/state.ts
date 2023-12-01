@@ -2,6 +2,7 @@ import { store } from '../store';
 import { Offer } from './offer';
 import { CityName } from './city-name';
 import { AuthorizationStatus } from '../const';
+import { UserData } from './user-data';
 
 export type State = ReturnType<typeof store.getState>;
 
@@ -15,4 +16,5 @@ export type OffersDataType = {
   isLoading: boolean;
   authorizationStatus: AuthorizationStatus;
   error: string | null;
+  userData: null | UserData;
 };

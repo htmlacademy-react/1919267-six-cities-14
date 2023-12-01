@@ -9,6 +9,7 @@ function Header(): JSX.Element {
   const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
   const favorites = useAppSelector((state) => state.favoriteOffers);
   const isLogged = checkAuthorizationStatus(authorizationStatus);
+  const user = useAppSelector((state) => state.userData);
   const dispatch = useAppDispatch();
 
   function onLogoutClickHandler() {
@@ -29,12 +30,17 @@ function Header(): JSX.Element {
                   ?
                   <Link to={AppRoute.Favorites} className="header__nav-link header__nav-link--profile" >
                     <div className="header__avatar-wrapper user__avatar-wrapper">
+                      <img
+                        className="header__avatar user__avatar"
+                        src={user?.avatarUrl}
+                        alt="avatar"
+                      />
                     </div>
-                    <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
+                    <span className="header__user-name user__name">{user?.email}</span>
                     <span className="header__favorite-count">{favorites.length}</span>
                   </Link>
                   :
-                  <Link className="header__nav-link header__nav-link--profile" to={AppRoute.Login}>
+                  <Link className="header__navlink header__nav-link--profile" to={AppRoute.Login} style={{display: 'flex'}}>
                     <div className="header__avatar-wrapper user__avatar-wrapper">
                     </div>
                     <span className="header__login">Sign in</span>

@@ -28,7 +28,7 @@ function FavoritesPage(): JSX.Element {
       dispatch(fetchFavoriteOffers());
     }
   },
-  [dispatch, favorites]);
+  [dispatch, favorites.length]);
 
   return (
     <div className="page">

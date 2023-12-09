@@ -7,7 +7,7 @@ import useMap from '../../hooks/use-map';
 import { URL_MARKER_DEFAULT, URL_MARKER_CURRENT } from '../../const';
 
 type MapProps = {
-  city: City;
+  city: City | undefined;
   offers: Offer[];
   hoveredOfferId: Offer['id'] | null;
   className: string;
@@ -31,10 +31,10 @@ function Map({city, offers, hoveredOfferId, className}: MapProps): JSX.Element {
   const map = useMap(mapRef, city);
 
   useEffect(() => {
-    if (map) {
+    if (map && city) {
       const markerLayer = layerGroup().addTo(map);
       offers.forEach((offer) => {
-        marker([offer.location.latitude, offer.location.longitude])
+        marker([offer?.location.latitude, offer?.location.longitude])
           .setIcon(offer.id === hoveredOfferId ? currentCustomIcon : defaultCustomIcon)
           .addTo(markerLayer);
       });

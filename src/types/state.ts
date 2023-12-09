@@ -10,6 +10,7 @@ export type AppDispatch = typeof store.dispatch;
 
 export type OffersDataType = {
   offers: Offer[];
+  activeOffer: null | Offer;
   nearbyOffers: Offer[];
   favoriteOffers: Offer[];
   currentCity: CityName;

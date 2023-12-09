@@ -5,26 +5,33 @@ import { Offer } from '../types/offer';
 import { AuthData } from '../types/auth-data';
 import { UserData } from '../types/user-data';
 import { APIRoute, AppRoute, AuthorizationStatus } from '../const';
-import { setFavoriteOffers, setOffers, requireAuthorization, setLoadingStatus, redirectToRoute, setUserData } from './action';
+import { setFavoriteOffers, setOffers, requireAuthorization, setLoadingStatus, redirectToRoute, setUserData, setActiveOffer } from './action';
 import { setToken, dropToken } from '../services/token';
 
-export const fetchOffers = createAsyncThunk<
-  void,
-  undefined,
-  {
-    dispatch: AppDispatch;
-    state: State;
-    extra: AxiosInstance;
+type Extra = {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}
+
+export const fetchOffers = createAsyncThunk<void, undefined, Extra>(
+  'offers/fetchOffers',
+  async (_arg, {dispatch, extra: api}) => {
+    dispatch(setLoadingStatus(true));
+    const {data} = await api.get<Offer[]>(APIRoute.Offers);
+    dispatch(setLoadingStatus(false));
+    dispatch(setOffers(data));
   }
-  >(
-    'offers/fetchOffers',
-    async (_arg, {dispatch, extra: api}) => {
-      dispatch(setLoadingStatus(true));
-      const {data} = await api.get<Offer[]>(APIRoute.Offers);
-      dispatch(setLoadingStatus(false));
-      dispatch(setOffers(data));
-    }
-  );
+);
+
+export const fetchActiveOffer = createAsyncThunk<Offer, string | undefined, Extra>(
+  'offer/fetchActiveOffer',
+  async (offerId, {extra: api, dispatch}) => {
+    const {data} = await api.get<Offer>(`${APIRoute.Offers}/${offerId}`);
+    dispatch(setActiveOffer(data));
+    return data;
+  }
+);
 
 export const fetchFavoriteOffers = createAsyncThunk<void, undefined, {
   dispatch: AppDispatch;

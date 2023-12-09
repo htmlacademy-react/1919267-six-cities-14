@@ -51,6 +51,9 @@ enum APIRoute {
   Favorite = '/favorite'
 }
 
+const BACKEND_URL = 'https://14.design.pages.academy/six-cities';
+const REQUEST_TIMEOUT = 5000;
+
 export{
   Settings,
   AppRoute,
@@ -64,4 +67,6 @@ export{
   SortingMap,
   DEFAULT_SORTING_OPTION,
   APIRoute,
+  BACKEND_URL,
+  REQUEST_TIMEOUT
 };

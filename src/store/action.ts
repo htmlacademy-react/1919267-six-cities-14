@@ -8,6 +8,10 @@ export const setOffers = createAction('offers/setOffers', (offers: Offer[]) => (
   payload: offers
 }));
 
+export const setActiveOffer = createAction('offer/setActiveOffer', (offer: Offer) => ({
+  payload: offer
+}));
+
 export const setFavoriteOffers = createAction('offers/setFavoriteOffers', (favoriteOffers: Offer[]) => ({
   payload: favoriteOffers
 }));

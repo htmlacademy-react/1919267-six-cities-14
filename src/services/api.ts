@@ -3,9 +3,7 @@ import { StatusCodes } from 'http-status-codes';
 import { getToken } from './token';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
-const BACKEND_URL = 'https://14.design.pages.academy/six-cities';
-const REQUEST_TIMEOUT = 5000;
+import { BACKEND_URL, REQUEST_TIMEOUT } from '../const';
 
 type DetailMessageType = {
   type: string;

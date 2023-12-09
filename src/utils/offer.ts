@@ -1,7 +1,7 @@
 import { Offer } from '../types/offer';
 
-function getRatingWidth (rating: number) {
-  return `${rating / 0.05}%`;
+function getRatingWidth (rating: number | undefined) {
+  return rating ? `${rating / 0.05}%` : '0%';
 }
 
 function sortByRating(itemA: Offer, itemB: Offer) {

@@ -1,10 +1,11 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { AuthorizationStatus, DEFAULT_CITY } from '../const';
-import { setCurrentCity, setOffers, setFavoriteOffers, requireAuthorization, setLoadingStatus, setUserData } from './action';
+import { setCurrentCity, setOffers, setFavoriteOffers, requireAuthorization, setLoadingStatus, setUserData, setActiveOffer } from './action';
 import { OffersDataType } from '../types/state';
 
 const initialState: OffersDataType = {
   offers: [],
+  activeOffer: null,
   nearbyOffers: [],
   favoriteOffers: [],
   currentCity: DEFAULT_CITY,
@@ -21,6 +22,9 @@ export const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(setOffers, (state, action) => {
       state.offers = action.payload;
+    })
+    .addCase(setActiveOffer, (state, action) => {
+      state.activeOffer = action.payload;
     })
     .addCase(setFavoriteOffers, (state, action) => {
       state.favoriteOffers = action.payload;

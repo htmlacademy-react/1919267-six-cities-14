@@ -1,9 +1,7 @@
 import { useState } from 'react';
-import { Navigate, useParams } from 'react-router-dom';
 import Header from '../../components/header/header';
 import { Helmet } from 'react-helmet-async';
 import { Offer } from '../../types/offer';
-import { AppRoute } from '../../const';
 import { addPluralEnding, capitalizeFirstLetter } from '../../utils/common';
 import { getRatingWidth } from '../../utils/offer';
 import ReviewForm from '../../components/review-form/review-form';
@@ -11,7 +9,8 @@ import Map from '../../components/map/map';
 import { Review } from '../../types/review';
 import ReviewsList from '../../components/reviews-list/reviews-list';
 import NearbyPlaces from '../../components/nearby-places/nearby-places';
-import { useAppSelector } from '../../hooks';
+import { useLoadOfferInfo } from '../../hooks/use-load-offer-info';
+import Loading from '../../components/loading/loading';
 
 type OfferPageProps = {
   reviews: Review[];
@@ -20,12 +19,10 @@ type OfferPageProps = {
 
 function OfferPage({reviews, nearbyOffers}: OfferPageProps): JSX.Element {
   const [chosenCard, setChosenCard] = useState<number | null>(null);
-  const {offerId} = useParams();
-  const offers = useAppSelector((state) => state.offers);
-  const offer = offers.find((item) => item.id.toString() === offerId);
+  const {offerInfo, isOfferInfoLoading} = useLoadOfferInfo();
 
-  if(!offer) {
-    return <Navigate to={AppRoute.NotFound}/>;
+  if (isOfferInfoLoading) {
+    return (<Loading />);
   }
 
   return (
@@ -40,9 +37,9 @@ function OfferPage({reviews, nearbyOffers}: OfferPageProps): JSX.Element {
           <div className="offer__gallery-container container">
             <div className="offer__gallery">
               {
-                offer.images.map((image) => (
+                offerInfo?.images.map((image) => (
                   <div key={image} className="offer__image-wrapper">
-                    <img className="offer__image" src={image} alt={offer.description} />
+                    <img className="offer__image" src={image} alt={offerInfo.description} />
                   </div>
                 ))
               }
@@ -51,7 +48,7 @@ function OfferPage({reviews, nearbyOffers}: OfferPageProps): JSX.Element {
           <div className="offer__container container">
             <div className="offer__wrapper">
               {
-                offer.isPremium && (
+                offerInfo?.isPremium && (
                   <div className="offer__mark">
                     <span>Premium</span>
                   </div>
@@ -59,7 +56,7 @@ function OfferPage({reviews, nearbyOffers}: OfferPageProps): JSX.Element {
               }
               <div className="offer__name-wrapper">
                 <h1 className="offer__name">
-                  {offer.title}
+                  {offerInfo?.title}
                 </h1>
                 <button className="offer__bookmark-button button" type="button">
                   <svg className="offer__bookmark-icon" width="31" height="33">
@@ -70,30 +67,30 @@ function OfferPage({reviews, nearbyOffers}: OfferPageProps): JSX.Element {
               </div>
               <div className="offer__rating rating">
                 <div className="offer__stars rating__stars">
-                  <span style={{width: getRatingWidth(offer.rating)}}></span>
+                  <span style={{width: getRatingWidth(offerInfo?.rating)}}></span>
                   <span className="visually-hidden">Rating</span>
                 </div>
-                <span className="offer__rating-value rating__value">{offer.rating}</span>
+                <span className="offer__rating-value rating__value">{offerInfo?.rating}</span>
               </div>
               <ul className="offer__features">
                 <li className="offer__feature offer__feature--entire">
-                  {capitalizeFirstLetter(offer.type)}
+                  {capitalizeFirstLetter(offerInfo?.type)}
                 </li>
                 <li className="offer__feature offer__feature--bedrooms">
-                  {offer.bedrooms} Bedroom{addPluralEnding(offer.bedrooms)}
+                  {offerInfo?.bedrooms} Bedroom{addPluralEnding(offerInfo?.bedrooms)}
                 </li>
                 <li className="offer__feature offer__feature--adults">
-                  Max {offer.maxAdults} adult{addPluralEnding(offer.maxAdults)}
+                  Max {offerInfo?.maxAdults} adult{addPluralEnding(offerInfo?.maxAdults)}
                 </li>
               </ul>
               <div className="offer__price">
-                <b className="offer__price-value">&euro;{offer.price}</b>
+                <b className="offer__price-value">&euro;{offerInfo?.price}</b>
                 <span className="offer__price-text">&nbsp;night</span>
               </div>
               <div className="offer__inside">
                 <h2 className="offer__inside-title">What&apos;s inside</h2>
                 <ul className="offer__inside-list">
-                  {offer.goods.map((item) => (
+                  {offerInfo?.goods.map((item) => (
                     <li key={item} className="offer__inside-item">
                       {item}
                     </li>
@@ -104,18 +101,18 @@ function OfferPage({reviews, nearbyOffers}: OfferPageProps): JSX.Element {
                 <h2 className="offer__host-title">Meet the host</h2>
                 <div className="offer__host-user user">
                   <div className="offer__avatar-wrapper offer__avatar-wrapper--pro user__avatar-wrapper">
-                    <img className="offer__avatar user__avatar" src={offer.host.avatarUrl} width="74" height="74" alt="Host avatar" />
+                    <img className="offer__avatar user__avatar" src={offerInfo?.host.avatarUrl} width="74" height="74" alt="Host avatar" />
                   </div>
                   <span className="offer__user-name">
-                    {offer.host.name}
+                    {offerInfo?.host.name}
                   </span>
                   <span className="offer__user-status">
-                    {offer.host.isPro ? 'Pro' : ''}
+                    {offerInfo?.host.isPro ? 'Pro' : ''}
                   </span>
                 </div>
                 <div className="offer__description">
                   <p className="offer__text">
-                    {offer.description}
+                    {offerInfo?.description}
                   </p>
                 </div>
               </div>
@@ -125,7 +122,7 @@ function OfferPage({reviews, nearbyOffers}: OfferPageProps): JSX.Element {
               </section>
             </div>
           </div>
-          <Map city={offer.city} offers={nearbyOffers} hoveredOfferId={chosenCard} className='offer__map'/>
+          <Map city={offerInfo?.city} offers={nearbyOffers} hoveredOfferId={chosenCard} className='offer__map'/>
         </section>
         <NearbyPlaces nearbyPlaces={nearbyOffers} setChosenCard={setChosenCard}/>
       </main>

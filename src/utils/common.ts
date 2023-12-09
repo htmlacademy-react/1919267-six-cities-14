@@ -19,12 +19,23 @@ function checkReviewValidation (comment: string, rating: number): boolean {
   return (comment.length >= MIN_COMMENT_LENGTH &&
     comment.length <= MAX_COMMENT_LENGTH &&
     rating !== 0);
+}
 
+function formatTime(date: Date){
+  const day = date.getDate().toString().padStart(2, '0');
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const year = date.getFullYear();
+
+  const h = date.getHours().toString().padStart(2, '0');
+  const m = date.getMinutes().toString().padStart(2, '0');
+
+  return `${day}.${month}.${year}, ${h}:${m}`;
 }
 
 export {
   capitalizeFirstLetter,
   addPluralEnding,
   checkAuthorizationStatus,
-  checkReviewValidation
+  checkReviewValidation,
+  formatTime
 };

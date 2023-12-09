@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import Header from '../../components/header/header';
 import { Helmet } from 'react-helmet-async';
-import { Offer } from '../../types/offer';
 import { addPluralEnding, capitalizeFirstLetter } from '../../utils/common';
 import { getRatingWidth } from '../../utils/offer';
 import ReviewForm from '../../components/review-form/review-form';
@@ -11,17 +10,18 @@ import ReviewsList from '../../components/reviews-list/reviews-list';
 import NearbyPlaces from '../../components/nearby-places/nearby-places';
 import { useLoadOfferInfo } from '../../hooks/use-load-offer-info';
 import Loading from '../../components/loading/loading';
+import { useLoadNearbyOffers } from '../../hooks/use-load-nearby-offers';
 
 type OfferPageProps = {
   reviews: Review[];
-  nearbyOffers: Offer[];
 }
 
-function OfferPage({reviews, nearbyOffers}: OfferPageProps): JSX.Element {
+function OfferPage({reviews}: OfferPageProps): JSX.Element {
   const [chosenCard, setChosenCard] = useState<number | null>(null);
   const {offerInfo, isOfferInfoLoading} = useLoadOfferInfo();
+  const {nearbyOffers, isNearbyDataLoading} = useLoadNearbyOffers();
 
-  if (isOfferInfoLoading) {
+  if (isOfferInfoLoading || isNearbyDataLoading) {
     return (<Loading />);
   }
 

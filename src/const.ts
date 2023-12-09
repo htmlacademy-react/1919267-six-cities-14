@@ -41,6 +41,8 @@ const SortingMap = {
 } as const;
 
 const DEFAULT_SORTING_OPTION = SortingMap['Popular'];
+const MAX_NEARBY_OFFERS_COUNT = 3;
+const MAX_SHOWN_REVIEWS = 10;
 
 enum APIRoute {
   Offers = '/offers',
@@ -68,5 +70,7 @@ export{
   DEFAULT_SORTING_OPTION,
   APIRoute,
   BACKEND_URL,
-  REQUEST_TIMEOUT
+  REQUEST_TIMEOUT,
+  MAX_NEARBY_OFFERS_COUNT,
+  MAX_SHOWN_REVIEWS
 };

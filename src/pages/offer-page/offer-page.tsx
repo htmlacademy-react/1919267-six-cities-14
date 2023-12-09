@@ -13,8 +13,8 @@ import { MAX_NEARBY_OFFERS_COUNT } from '../../const';
 import { useParams } from 'react-router';
 
 function OfferPage(): JSX.Element {
-  const {offerId} = useParams();
-  const [chosenCard, setChosenCard] = useState<number | null>(null);
+  const offerId = useParams()?.offerId;
+  const [chosenCard, setChosenCard] = useState<string| null>(null);
   const {offerInfo, isOfferInfoLoading} = useLoadOfferInfo();
   const {nearbyOffers, isNearbyDataLoading} = useLoadNearbyOffers();
   const nearbyOffersToRender = nearbyOffers.slice(0, MAX_NEARBY_OFFERS_COUNT);

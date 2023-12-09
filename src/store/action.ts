@@ -38,3 +38,7 @@ export const setUserData = createAction('user/setData', (userData: UserData) => 
 export const setReviews = createAction('offer/setReviews', (reviews: Review[]) => ({
   payload: reviews
 }));
+
+export const setReview = createAction('offer/setReview', (review: Review) => ({
+  payload: review
+}));

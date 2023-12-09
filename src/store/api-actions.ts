@@ -5,9 +5,9 @@ import { Offer } from '../types/offer';
 import { AuthData } from '../types/auth-data';
 import { UserData } from '../types/user-data';
 import { APIRoute, AppRoute, AuthorizationStatus } from '../const';
-import { setFavoriteOffers, setOffers, requireAuthorization, setLoadingStatus, redirectToRoute, setUserData, setActiveOffer, setReviews } from './action';
+import { setFavoriteOffers, setOffers, requireAuthorization, setLoadingStatus, redirectToRoute, setUserData, setActiveOffer, setReviews, setReview } from './action';
 import { setToken, dropToken } from '../services/token';
-import { Review } from '../types/review';
+import { ReviewData, Review } from '../types/review';
 
 type Extra = {
   dispatch: AppDispatch;
@@ -25,7 +25,7 @@ export const fetchOffers = createAsyncThunk<void, undefined, Extra>(
   }
 );
 
-export const fetchActiveOffer = createAsyncThunk<Offer, string | undefined, Extra>(
+export const fetchActiveOffer = createAsyncThunk<Offer, Offer['id'], Extra>(
   'offer/fetchActiveOffer',
   async (offerId, {extra: api, dispatch}) => {
     const {data} = await api.get<Offer>(`${APIRoute.Offers}/${offerId}`);
@@ -34,12 +34,23 @@ export const fetchActiveOffer = createAsyncThunk<Offer, string | undefined, Extr
   }
 );
 
-export const fetchReviews = createAsyncThunk<Review[], string | undefined, Extra>(
+export const fetchReviews = createAsyncThunk<Review[], Offer['id'], Extra>(
   'offer/fetchReviews',
   async (offerId, {extra: api, dispatch}) => {
     const {data} = await api.get<Review[]>(`${APIRoute.Reviews}/${offerId}`);
     dispatch(setReviews(data));
     return data;
+  }
+);
+
+export const sendReview = createAsyncThunk<void, ReviewData, Extra>(
+  'offer/sendReview',
+  async ({comment, rating, id}, {extra: api, dispatch}) => {
+    const {data} = await api.post<Review>(
+      `${APIRoute.Reviews}/${id}`,
+      {comment, rating}
+    );
+    dispatch(setReview(data));
   }
 );
 

@@ -5,9 +5,10 @@ import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchReviews } from '../../store/api-actions';
 import ReviewForm from '../review-form/review-form';
+import { Offer } from '../../types/offer';
 
 type ReviewsListProps = {
-  offerId: string | undefined;
+  offerId: Offer['id'] | undefined ;
 }
 
 function ReviewsList({offerId}: ReviewsListProps): JSX.Element {
@@ -26,12 +27,12 @@ function ReviewsList({offerId}: ReviewsListProps): JSX.Element {
   return(
     <section className="offer__reviews reviews">
       <h2 className="reviews__title">
-        Reviews &middot; <span className="reviews__amount">{reviews.length}</span>
+        Reviews &middot; <span className="reviews__amount">{MAX_SHOWN_REVIEWS} of {reviews.length}</span>
       </h2>
       <ul className="reviews__list">
         {reviewsToShow.map((item: Review) => <ReviewItem key={item.id} {...item}/>)}
       </ul>
-      {authorizationStatus === AuthorizationStatus.Auth && <ReviewForm />}
+      {authorizationStatus === AuthorizationStatus.Auth && <ReviewForm id={offerId}/>}
     </section>
   );
 

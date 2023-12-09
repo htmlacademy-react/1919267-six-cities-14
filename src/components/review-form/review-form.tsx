@@ -1,33 +1,51 @@
-import { ChangeEvent, Fragment, useState } from 'react';
-import { MAX_COMMENT_LENGTH, MIN_COMMENT_LENGTH } from '../../const';
+import { FormEvent, ChangeEvent, Fragment, useState } from 'react';
+import { MIN_COMMENT_LENGTH } from '../../const';
+import { Offer } from '../../types/offer';
+import { useAppDispatch } from '../../hooks';
+import { checkReviewValidation } from '../../utils/common';
+import { sendReview } from '../../store/api-actions';
 
 const ratingMap = {
-  '5': 'excellent',
-  '4': 'good',
-  '3': 'not bad',
-  '2': 'bad',
-  '1': 'terrible'
+  5: 'excellent',
+  4: 'good',
+  3: 'not bad',
+  2: 'bad',
+  1: 'terrible'
 };
 
-function ReviewForm () {
+type ReviewFormProps = {
+  id: Offer['id'] | undefined;
+}
+
+function ReviewForm ({id}: ReviewFormProps): JSX.Element {
   const [comment, setComment] = useState('');
-  const [rating, setRating] = useState('');
+  const [rating, setRating] = useState(0);
+  const dispatch = useAppDispatch();
 
-  const isValid =
-    comment.length >= MIN_COMMENT_LENGTH &&
-    comment.length <= MAX_COMMENT_LENGTH &&
-    rating !== '';
+  function ratingChangeHandler (evt: ChangeEvent<HTMLInputElement>) {
+    setRating(Number(evt.target.value));
+  }
 
-  function handleTextareaChange (evt: ChangeEvent<HTMLTextAreaElement>) {
+  function textareaChangeHandler (evt: ChangeEvent<HTMLTextAreaElement>) {
     setComment(evt.target.value);
   }
 
-  function handleInputChange (evt: ChangeEvent<HTMLInputElement>) {
-    setRating(evt.target.value);
+  function formSubmitHandler (evt: FormEvent<HTMLFormElement>) {
+    evt.preventDefault();
+    dispatch(sendReview({comment, rating, id}));
+    setComment('');
+    setRating(0);
   }
 
+  const isSubmitDisabled = checkReviewValidation(comment, rating);
+
   return (
-    <form className="reviews__form form" action="#" method="post">
+    <form
+      className="reviews__form form"
+      action="#"
+      method="post"
+      onSubmit={formSubmitHandler}
+    >
       <label className="reviews__label form__label" htmlFor="review">Your review</label>
       <div className="reviews__rating-form form__rating">
         {Object.entries(ratingMap)
@@ -40,8 +58,8 @@ function ReviewForm () {
                 value={score}
                 id={`${score}-stars`}
                 type="radio"
-                checked={rating === score}
-                onChange={handleInputChange}
+                checked={rating === Number(score)}
+                onChange={ratingChangeHandler}
               />
               <label htmlFor={`${score}-stars`} className="reviews__rating-label form__rating-label" title={title}>
                 <svg className="form__star-image" width="37" height="33">
@@ -57,7 +75,7 @@ function ReviewForm () {
         name="review"
         placeholder="Tell how was your stay, what you like and what can be improved"
         value={comment}
-        onChange={handleTextareaChange}
+        onChange={textareaChangeHandler}
       >
       </textarea>
       <div className="reviews__button-wrapper">
@@ -67,7 +85,7 @@ function ReviewForm () {
         <button
           className="reviews__submit form__submit button"
           type="submit"
-          disabled={!isValid}
+          disabled={!isSubmitDisabled}
         >
           Submit
         </button>

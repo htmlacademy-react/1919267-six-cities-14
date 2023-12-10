@@ -32,10 +32,15 @@ function formatTime(date: Date){
   return `${day}.${month}.${year}, ${h}:${m}`;
 }
 
+function getRandomArrayElement<T>(items: T[]): T {
+  return items[Math.floor(Math.random() * items.length)];
+}
+
 export {
   capitalizeFirstLetter,
   addPluralEnding,
   checkAuthorizationStatus,
   checkReviewValidation,
-  formatTime
+  formatTime,
+  getRandomArrayElement
 };

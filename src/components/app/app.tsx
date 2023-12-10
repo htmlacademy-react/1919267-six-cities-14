@@ -7,7 +7,6 @@ import NotFoundPage from '../../pages/not-found-page/not-found-page';
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import PrivateRoute from '../private-route/private-route';
 import { HelmetProvider } from 'react-helmet-async';
-import { reviews } from '../../mocks/reviews';
 import { store } from '../../store';
 import { fetchOffers } from '../../store/api-actions';
 
@@ -28,7 +27,7 @@ function App(): JSX.Element {
             />
             <Route
               path={`${AppRoute.Offer}/:offerId`}
-              element={<OfferPage reviews={reviews} />}
+              element={<OfferPage />}
             />
             <Route
               path={AppRoute.Favorites}

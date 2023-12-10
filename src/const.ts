@@ -25,6 +25,15 @@ enum Cities {
   Dusseldorf = 'Dusseldorf',
 }
 
+const CityMap = {
+  Paris: { name: Cities.Paris, location: { latitude: 48.8566, longitude: 2.3522, zoom: 10} },
+  Cologne: { name: Cities.Cologne, location: { latitude: 50.935173, longitude: 6.953101, zoom: 10 }},
+  Brussels: { name: Cities.Brussels, location: { latitude: 50.8476, longitude: 4.3572, zoom: 10 } },
+  Amsterdam: { name: Cities.Amsterdam, location: { latitude: 52.3676, longitude: 4.9041, zoom: 10 } },
+  Hamburg: { name: Cities.Hamburg, location: { latitude: 53.5488, longitude: 9.9872, zoom: 10 } },
+  Dusseldorf: { name: Cities.Dusseldorf, location: { latitude: 51.2277, longitude: 6.7735, zoom: 10 } },
+} as const;
+
 const DEFAULT_CITY = Cities.Paris;
 
 const MIN_COMMENT_LENGTH = 50;
@@ -56,6 +65,27 @@ enum APIRoute {
 const BACKEND_URL = 'https://14.design.pages.academy/six-cities';
 const REQUEST_TIMEOUT = 5000;
 
+enum RequestStatus {
+  Loading ='Loading',
+  Idle = 'Idle',
+  Error = 'Error',
+  Success = 'Success'
+}
+
+enum NameSpace {
+  ReviewData = 'REVIEW_DATA',
+  UserData = 'USER_DATA',
+}
+
+const HttpStatus = {
+  Ok: 200,
+  Created: 201,
+  BadRequest: 400,
+  Unauthorized: 401,
+  Forbidden: 403,
+  NotFound: 404,
+} as const;
+
 export{
   Settings,
   AppRoute,
@@ -72,5 +102,9 @@ export{
   BACKEND_URL,
   REQUEST_TIMEOUT,
   MAX_NEARBY_OFFERS_COUNT,
-  MAX_SHOWN_REVIEWS
+  MAX_SHOWN_REVIEWS,
+  RequestStatus,
+  NameSpace,
+  HttpStatus,
+  CityMap
 };

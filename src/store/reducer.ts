@@ -1,7 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { AuthorizationStatus, DEFAULT_CITY } from '../const';
 import { setCurrentCity, setOffers, setFavoriteOffers, requireAuthorization, setLoadingStatus, setUserData, setActiveOffer, setReviews, setReview } from './action';
-import { OffersDataType } from '../types/state';
 
 const initialState: OffersDataType = {
   offers: [],

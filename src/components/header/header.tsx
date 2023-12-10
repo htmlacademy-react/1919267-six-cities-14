@@ -3,17 +3,18 @@ import { AppRoute } from '../../const';
 import Logo from '../logo/logo';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { checkAuthorizationStatus } from '../../utils/common';
-import { logoutAction } from '../../store/api-actions';
+import { logout } from '../../store/api-actions';
+import { selectAuthorizationStatus, selectUserData } from '../../store/user-data/selectors';
 
 function Header(): JSX.Element {
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
-  const favorites = useAppSelector((state) => state.favoriteOffers);
+  const authorizationStatus = useAppSelector(selectAuthorizationStatus);
+  //const favorites = useAppSelector((state) => state.favoriteOffers);
   const isLogged = checkAuthorizationStatus(authorizationStatus);
-  const user = useAppSelector((state) => state.userData);
+  const user = useAppSelector(selectUserData);
   const dispatch = useAppDispatch();
 
   function onLogoutClickHandler() {
-    dispatch(logoutAction());
+    dispatch(logout());
   }
 
   return (
@@ -37,7 +38,7 @@ function Header(): JSX.Element {
                       />
                     </div>
                     <span className="header__user-name user__name">{user?.email}</span>
-                    <span className="header__favorite-count">{favorites.length}</span>
+                    <span className="header__favorite-count">1000</span>
                   </Link>
                   :
                   <Link className="header__navlink header__nav-link--profile" to={AppRoute.Login} style={{display: 'flex'}}>

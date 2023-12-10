@@ -1,23 +1,33 @@
+import { AuthorizationStatus, RequestStatus } from '../const';
 import { store } from '../store';
-import { Offer } from './offer';
-import { CityName } from './city-name';
-import { AuthorizationStatus } from '../const';
-import { UserData } from './user-data';
 import { Review } from './review';
+import { TUser } from './user';
 
 export type State = ReturnType<typeof store.getState>;
 
 export type AppDispatch = typeof store.dispatch;
 
-export type OffersDataType = {
-  offers: Offer[];
-  activeOffer: null | Offer;
-  nearbyOffers: Offer[];
-  favoriteOffers: Offer[];
+// export type OffersDataType = {
+//   offers: Offer[];
+//   activeOffer: null | Offer;
+//   nearbyOffers: Offer[];
+//   favoriteOffers: Offer[];
+//   reviews: Review[];
+//   currentCity: CityName;
+//   isLoading: boolean;
+//   authorizationStatus: AuthorizationStatus;
+//   error: string | null;
+//   userData: null | UserData;
+// };
+
+export type TReviewsData = {
   reviews: Review[];
-  currentCity: CityName;
-  isLoading: boolean;
+  reviewFetchingStatus: RequestStatus;
+  reviewSendingStatus: RequestStatus;
+}
+
+export type TUserData = {
+  user: TUser | null;
   authorizationStatus: AuthorizationStatus;
-  error: string | null;
-  userData: null | UserData;
-};
+  sendingStatus: RequestStatus;
+}

@@ -5,7 +5,7 @@ import { Offer } from '../types/offer';
 import { TLoginData } from '../types/login-data';
 import { TUser } from '../types/user';
 import { APIRoute, AuthorizationStatus, HttpStatus } from '../const';
-import { setFavoriteOffers, setOffers, requireAuthorization, setLoadingStatus, setActiveOffer, setReviews } from './action';
+import { setFavoriteOffers, requireAuthorization, setActiveOffer } from './action';
 import { setToken, dropToken } from '../services/token';
 import { ReviewData, Review } from '../types/review';
 
@@ -15,13 +15,11 @@ type Extra = {
   extra: AxiosInstance;
 }
 
-export const fetchOffers = createAsyncThunk<void, undefined, Extra>(
+export const fetchOffers = createAsyncThunk<Offer[], undefined, Extra>(
   'offers/fetchOffers',
-  async (_arg, {dispatch, extra: api}) => {
-    dispatch(setLoadingStatus(true));
+  async (_arg, {extra: api}) => {
     const {data} = await api.get<Offer[]>(APIRoute.Offers);
-    dispatch(setLoadingStatus(false));
-    dispatch(setOffers(data));
+    return data;
   }
 );
 
@@ -36,9 +34,8 @@ export const fetchActiveOffer = createAsyncThunk<Offer, Offer['id'], Extra>(
 
 export const fetchReviews = createAsyncThunk<Review[], Offer['id'], Extra>(
   'offer/fetchReviews',
-  async (offerId, {extra: api, dispatch}) => {
+  async (offerId, {extra: api}) => {
     const {data} = await api.get<Review[]>(`${APIRoute.Reviews}/${offerId}`);
-    dispatch(setReviews(data));
     return data;
   }
 );
@@ -54,11 +51,7 @@ export const sendReview = createAsyncThunk<Review, ReviewData, Extra>(
   }
 );
 
-export const fetchFavoriteOffers = createAsyncThunk<void, undefined, {
-  dispatch: AppDispatch;
-  state: State;
-  extra: AxiosInstance;
-}>(
+export const fetchFavoriteOffers = createAsyncThunk<void, undefined, Extra>(
   'offers/fetchFavoriteOffers',
   async (_arg, {dispatch, extra: api}) => {
     const {data} = await api.get<Offer[]>(APIRoute.Favorite);
@@ -95,11 +88,7 @@ export const login = createAsyncThunk<TUser, TLoginData, Extra>(
   },
 );
 
-export const logout = createAsyncThunk<void, undefined, {
-  dispatch: AppDispatch;
-  state: State;
-  extra: AxiosInstance;
-}>(
+export const logout = createAsyncThunk<void, undefined, Extra>(
   'user/logout',
   async (_arg, {dispatch, extra: api}) => {
     await api.delete(APIRoute.Logout);

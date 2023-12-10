@@ -7,6 +7,7 @@ import { fetchReviews } from '../../store/api-actions';
 import ReviewForm from '../review-form/review-form';
 import { Offer } from '../../types/offer';
 import { selectReviews } from '../../store/reviews-data/selectors';
+import { selectAuthorizationStatus } from '../../store/user-data/selectors';
 
 type ReviewsListProps = {
   offerId: Offer['id'] | undefined ;
@@ -16,7 +17,7 @@ function ReviewsList({offerId}: ReviewsListProps): JSX.Element {
   const reviews = useAppSelector(selectReviews);
   const sortedReviews = reviews.toSorted((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
   const reviewsToShow = sortedReviews.slice(0, MAX_SHOWN_REVIEWS);
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
+  const authorizationStatus = useAppSelector(selectAuthorizationStatus);
   const dispatch = useAppDispatch();
 
   useEffect(() => {

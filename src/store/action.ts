@@ -1,5 +1,4 @@
 import { createAction } from '@reduxjs/toolkit';
-import { CityName } from '../types/city-name';
 import { Offer } from '../types/offer';
 import { AuthorizationStatus, AppRoute } from '../const';
 import { TUser } from '../types/user';
@@ -15,10 +14,6 @@ export const setActiveOffer = createAction('offer/setActiveOffer', (offer: Offer
 
 export const setFavoriteOffers = createAction('offers/setFavoriteOffers', (favoriteOffers: Offer[]) => ({
   payload: favoriteOffers
-}));
-
-export const setCurrentCity = createAction('offers/setCurrentCity', (currentCityName: CityName) => ({
-  payload: currentCityName
 }));
 
 export const requireAuthorization = createAction('user/checkAuth', (authStatus: AuthorizationStatus) => ({

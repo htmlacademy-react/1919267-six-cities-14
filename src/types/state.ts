@@ -1,5 +1,7 @@
 import { AuthorizationStatus, RequestStatus } from '../const';
 import { store } from '../store';
+import { City } from './city';
+import { Offer } from './offer';
 import { Review } from './review';
 import { TUser } from './user';
 
@@ -31,3 +33,9 @@ export type TUserData = {
   authorizationStatus: AuthorizationStatus;
   sendingStatus: RequestStatus;
 }
+
+export type TOffersData = {
+  offers: Offer[];
+  currentCity: City;
+  offersFetchingStatus: RequestStatus;
+};

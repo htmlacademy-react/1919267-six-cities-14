@@ -73,6 +73,8 @@ enum RequestStatus {
 }
 
 enum NameSpace {
+  OffersData = 'OFFERS_DATA',
+  OfferData = 'OFFER_DATA',
   ReviewData = 'REVIEW_DATA',
   UserData = 'USER_DATA',
 }

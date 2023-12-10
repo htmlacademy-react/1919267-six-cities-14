@@ -1,34 +1,30 @@
 import cn from 'classnames';
-import { Cities } from '../../const';
-import { useAppDispatch, useAppSelector } from '../../hooks';
-import { setCurrentCity } from '../../store/action';
-import { CityName } from '../../types/city-name';
+import { Cities, CityMap } from '../../const';
+import { City } from '../../types/city';
 
-function LocationsList(): JSX.Element {
-  const currentCity = useAppSelector((state) => state.currentCity);
-  const dispatch = useAppDispatch();
-  const cities = Object.values(Cities);
+type TLocationsListProps = {
+  currentCity: keyof typeof Cities;
+  onSelectedCityClick: (city: City) => void;
+}
 
-  const handleCityClick = (city: CityName) => (evt: React.MouseEvent<HTMLAnchorElement, MouseEvent>): void => {
-    evt.preventDefault();
-    dispatch(setCurrentCity(city));
-  };
+function LocationsList({currentCity, onSelectedCityClick}: TLocationsListProps): JSX.Element {
+  const cities = Object.values(CityMap);
 
   return (
     <ul className="locations__list tabs__list">
       {
         cities.map((item) => (
-          <li key={item} className="locations__item">
-            <a
+          <li key={item.name} className="locations__item">
+            <div
               className={cn(
                 'locations__item-link',
                 'tabs__item',
-                {'tabs__item--active': item === currentCity}
+                {'tabs__item--active': item.name === currentCity}
               )}
-              onClick={handleCityClick(item)}
+              onClick={() => onSelectedCityClick(item)}
             >
-              <span>{item}</span>
-            </a>
+              <span>{item.name}</span>
+            </div>
           </li>))
       }
     </ul>

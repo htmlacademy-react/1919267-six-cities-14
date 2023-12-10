@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import Header from '../../components/header/header';
+import {Header} from '../../components/header/header';
 import { Helmet } from 'react-helmet-async';
 import { addPluralEnding, capitalizeFirstLetter } from '../../utils/common';
 import { getRatingWidth } from '../../utils/offer';

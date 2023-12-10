@@ -5,8 +5,9 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import { checkAuthorizationStatus } from '../../utils/common';
 import { logout } from '../../store/api-actions';
 import { selectAuthorizationStatus, selectUserData } from '../../store/user-data/selectors';
+import { memo } from 'react';
 
-function Header(): JSX.Element {
+function Header_(): JSX.Element {
   const authorizationStatus = useAppSelector(selectAuthorizationStatus);
   //const favorites = useAppSelector((state) => state.favoriteOffers);
   const isLogged = checkAuthorizationStatus(authorizationStatus);
@@ -66,4 +67,4 @@ function Header(): JSX.Element {
   );
 }
 
-export default Header;
+export const Header = memo(Header_);

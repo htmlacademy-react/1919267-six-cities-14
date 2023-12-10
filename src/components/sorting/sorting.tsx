@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { memo, useState } from 'react';
 import cn from 'classnames';
 import { SortingMap } from '../../const';
 import { TSorting } from '../../types/sorting';
@@ -8,7 +8,7 @@ type SortingProps = {
   onSortingOptionClick: (type: TSorting) => void;
 }
 
-function Sorting({activeSorting, onSortingOptionClick}: SortingProps): JSX.Element {
+function Sorting_({activeSorting, onSortingOptionClick}: SortingProps): JSX.Element {
   const [isOpened, setIsOpened] = useState(false);
   const arrowStyle = {
     transform: `translateY(-50%) ${isOpened ? 'rotate(180deg)' : ''}`
@@ -68,4 +68,4 @@ function Sorting({activeSorting, onSortingOptionClick}: SortingProps): JSX.Eleme
   );
 }
 
-export default Sorting;
+export const Sorting = memo(Sorting_);

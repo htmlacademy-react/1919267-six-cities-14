@@ -1,4 +1,4 @@
-import Header from '../../components/header/header';
+import {Header} from '../../components/header/header';
 import { Helmet } from 'react-helmet-async';
 import PlaceCard from '../../components/offer-card/offer-card';
 import { Offer } from '../../types/offer';

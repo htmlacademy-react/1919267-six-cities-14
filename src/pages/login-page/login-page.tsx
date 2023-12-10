@@ -8,6 +8,7 @@ import { AppRoute, AuthorizationStatus, CityMap, RequestStatus } from '../../con
 import { selectAuthorizationStatus, selectSendingStatus } from '../../store/user-data/selectors';
 import styles from './login-page.module.css';
 import { getRandomArrayElement } from '../../utils/common';
+import { setCurrentCity } from '../../store/offers-data/offers-data';
 
 function LoginPage(): JSX.Element {
   const [password, setPassword] = useState('');
@@ -54,7 +55,8 @@ function LoginPage(): JSX.Element {
 
   function onRandomCityClickHandler (evt: React.MouseEvent<HTMLAnchorElement>) {
     evt.preventDefault();
-    // TODO
+    dispatch(setCurrentCity(randomCity));
+    navigate(AppRoute.Root);
   }
 
   useEffect(() => {

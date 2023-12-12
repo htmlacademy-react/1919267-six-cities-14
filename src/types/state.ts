@@ -39,3 +39,8 @@ export type TOffersData = {
   currentCity: City;
   offersFetchingStatus: RequestStatus;
 };
+
+export type TFavoritesData = {
+  favorites: Offer[];
+  favoritesFetchingStatus: RequestStatus;
+}

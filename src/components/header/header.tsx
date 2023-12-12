@@ -6,10 +6,11 @@ import { checkAuthorizationStatus } from '../../utils/common';
 import { logout } from '../../store/api-actions';
 import { selectAuthorizationStatus, selectUserData } from '../../store/user-data/selectors';
 import { memo } from 'react';
+import { selectFavorites } from '../../store/favorites-data/selectors';
 
 function Header_(): JSX.Element {
   const authorizationStatus = useAppSelector(selectAuthorizationStatus);
-  //const favorites = useAppSelector((state) => state.favoriteOffers);
+  const favorites = useAppSelector(selectFavorites);
   const isLogged = checkAuthorizationStatus(authorizationStatus);
   const user = useAppSelector(selectUserData);
   const dispatch = useAppDispatch();
@@ -39,7 +40,7 @@ function Header_(): JSX.Element {
                       />
                     </div>
                     <span className="header__user-name user__name">{user?.email}</span>
-                    <span className="header__favorite-count">1000</span>
+                    <span className="header__favorite-count">{favorites.length}</span>
                   </Link>
                   :
                   <Link className="header__navlink header__nav-link--profile" to={AppRoute.Login} style={{display: 'flex'}}>

@@ -3,7 +3,7 @@ import Logo from '../../components/logo/logo';
 import { Helmet } from 'react-helmet-async';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { useNavigate } from 'react-router-dom';
-import { fetchOffers, login } from '../../store/api-actions';
+import { fetchFavoriteOffers, login } from '../../store/api-actions';
 import { AppRoute, AuthorizationStatus, CityMap, RequestStatus } from '../../const';
 import { selectAuthorizationStatus, selectSendingStatus } from '../../store/user-data/selectors';
 import styles from './login-page.module.css';
@@ -36,7 +36,7 @@ function LoginPage(): JSX.Element {
     }
 
     dispatch(login({email, password}))
-      .then(() => dispatch(fetchOffers()));
+      .then(() => dispatch(fetchFavoriteOffers()));
   }
 
   function onChangeEmailHandler (evt: React.ChangeEvent<HTMLInputElement>) {

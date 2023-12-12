@@ -5,7 +5,7 @@ import { Offer } from '../types/offer';
 import { TLoginData } from '../types/login-data';
 import { TUser } from '../types/user';
 import { APIRoute, AuthorizationStatus, HttpStatus } from '../const';
-import { setFavoriteOffers, requireAuthorization, setActiveOffer } from './action';
+import { requireAuthorization, setActiveOffer } from './action';
 import { setToken, dropToken } from '../services/token';
 import { ReviewData, Review } from '../types/review';
 
@@ -51,11 +51,11 @@ export const sendReview = createAsyncThunk<Review, ReviewData, Extra>(
   }
 );
 
-export const fetchFavoriteOffers = createAsyncThunk<void, undefined, Extra>(
+export const fetchFavoriteOffers = createAsyncThunk<Offer[], undefined, Extra>(
   'offers/fetchFavoriteOffers',
-  async (_arg, {dispatch, extra: api}) => {
+  async (_arg, {extra: api}) => {
     const {data} = await api.get<Offer[]>(APIRoute.Favorite);
-    dispatch(setFavoriteOffers(data));
+    return data;
   }
 );
 

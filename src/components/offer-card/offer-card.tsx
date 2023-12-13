@@ -3,6 +3,7 @@ import { Offer } from '../../types/offer';
 import { AppRoute } from '../../const';
 import { getRatingWidth } from '../../utils/offer';
 import BookmarkButton from '../bookmark-button/bookmark-button';
+import { memo } from 'react';
 
 
 type Size = 'small' | 'large';
@@ -69,4 +70,5 @@ function OfferCard({offer, block, size = 'large', onCardHover}: OfferCardProps):
   );
 }
 
-export default OfferCard;
+const MemoizedCard = memo(OfferCard);
+export default MemoizedCard;

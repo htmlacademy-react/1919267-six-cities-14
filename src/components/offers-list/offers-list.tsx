@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { Offer } from '../../types/offer';
 import { TSorting } from '../../types/sorting';
 import { addPluralEnding } from '../../utils/common';
@@ -23,13 +23,13 @@ function OffersList ({currentOffers, currentLocation}: OffersListProps): JSX.Ele
   const locationForMap = currentOffers[0].city;
   const fetchingStatus = useAppSelector(selectOffersFetchingStatus);
 
-  function handleCardHover (offerId: string | null) {
+  const handleCardHover = useCallback((offerId: string | null) => {
     setSelectedOfferCardId(offerId);
-  }
+  }, []);
 
-  function handleSortingChange(option: TSorting) {
+  const handleSortingChange = useCallback((option: TSorting) => {
     setActiveSorting(option);
-  }
+  }, []);
 
   const sortedOffers = useMemo(
     () => sorting[activeSorting](currentOffers),

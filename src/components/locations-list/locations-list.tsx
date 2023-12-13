@@ -1,6 +1,7 @@
 import cn from 'classnames';
 import { Cities, CityMap } from '../../const';
 import { City } from '../../types/city';
+import { memo, useMemo } from 'react';
 
 type TLocationsListProps = {
   currentCity: keyof typeof Cities;
@@ -8,7 +9,7 @@ type TLocationsListProps = {
 }
 
 function LocationsList({currentCity, onSelectedCityClick}: TLocationsListProps): JSX.Element {
-  const cities = Object.values(CityMap);
+  const cities = useMemo(() => Object.values(CityMap), []);
 
   return (
     <div className="tabs">
@@ -35,4 +36,5 @@ function LocationsList({currentCity, onSelectedCityClick}: TLocationsListProps):
   );
 }
 
-export default LocationsList;
+const MemoizedLocationsList = memo(LocationsList);
+export default MemoizedLocationsList;

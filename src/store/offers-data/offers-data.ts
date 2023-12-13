@@ -1,6 +1,6 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { CityMap, NameSpace, RequestStatus } from '../../const';
-import { fetchOffers } from '../api-actions';
+import { fetchOffers, updateFavoriteStatus } from '../api-actions';
 import { TOffersData } from '../../types/state';
 import { City } from '../../types/city';
 
@@ -29,6 +29,14 @@ export const offersData = createSlice({
       })
       .addCase(fetchOffers.rejected, (state) => {
         state.offersFetchingStatus = RequestStatus.Error;
+      })
+      .addCase(updateFavoriteStatus.fulfilled, (state, action) => {
+        state.offers.map((item) => ({
+          ...item,
+          isFavorite: item.id === action.payload.id
+            ? action.payload.isFavorite
+            : item.isFavorite
+        }));
       });
   }
 });

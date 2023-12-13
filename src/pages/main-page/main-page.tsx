@@ -6,12 +6,11 @@ import OffersList from '../../components/offers-list/offers-list';
 import NoOffers from '../../components/no-offers/no-offers';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchOffers } from '../../store/api-actions';
-import Loading from '../../components/loading/loading';
 import { RequestStatus } from '../../const';
 import { selectCurrentCity, selectOffers, selectOffersFetchingStatus } from '../../store/offers-data/selectors';
 import { City } from '../../types/city';
 import { setCurrentCity } from '../../store/offers-data/offers-data';
-
+import LoadingPage from '../loading-page/loading-page';
 
 function MainPage(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -38,6 +37,10 @@ function MainPage(): JSX.Element {
     dispatch(fetchOffers());
   }, [dispatch, currentLocation]);
 
+  if (fetchingStatus === RequestStatus.Loading) {
+    return <LoadingPage />;
+  }
+
   return (
     <div className="page page--gray page--main">
       <Helmet>
@@ -55,7 +58,6 @@ function MainPage(): JSX.Element {
           </section>
         </div>
         <div className="cities">
-          {fetchingStatus === RequestStatus.Loading && <Loading />}
           {
             fetchingStatus === RequestStatus.Success && currentOffers.length
               ? <OffersList currentLocation={currentLocation.name} currentOffers={currentOffers}/>

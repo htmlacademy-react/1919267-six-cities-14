@@ -7,10 +7,10 @@ import Map from '../../components/map/map';
 import ReviewsList from '../../components/reviews-list/reviews-list';
 import NearbyPlaces from '../../components/nearby-places/nearby-places';
 import { useLoadOfferInfo } from '../../hooks/use-load-offer-info';
-import Loading from '../../components/loading/loading';
 import { useLoadNearbyOffers } from '../../hooks/use-load-nearby-offers';
 import { MAX_NEARBY_OFFERS_COUNT } from '../../const';
 import { useParams } from 'react-router';
+import LoadingPage from '../loading-page/loading-page';
 
 function OfferPage(): JSX.Element {
   const offerId = useParams()?.offerId;
@@ -20,7 +20,7 @@ function OfferPage(): JSX.Element {
   const nearbyOffersToRender = nearbyOffers.slice(0, MAX_NEARBY_OFFERS_COUNT);
 
   if (isOfferInfoLoading || isNearbyDataLoading) {
-    return (<Loading />);
+    return (<LoadingPage />);
   }
 
   return (

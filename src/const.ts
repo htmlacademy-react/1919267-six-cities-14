@@ -89,6 +89,11 @@ const HttpStatus = {
   NotFound: 404,
 } as const;
 
+const enum FavoriteStatus {
+  Added = 1,
+  Deleted = 0
+}
+
 export{
   Settings,
   AppRoute,
@@ -109,5 +114,6 @@ export{
   RequestStatus,
   NameSpace,
   HttpStatus,
-  CityMap
+  CityMap,
+  FavoriteStatus
 };

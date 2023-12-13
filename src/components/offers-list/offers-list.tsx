@@ -5,9 +5,12 @@ import { addPluralEnding } from '../../utils/common';
 import OfferCard from '../offer-card/offer-card';
 import Map from '../map/map';
 import {Sorting} from '../sorting/sorting';
-import { DEFAULT_SORTING_OPTION } from '../../const';
+import { DEFAULT_SORTING_OPTION, RequestStatus } from '../../const';
 import { sorting } from '../../utils/offer';
 import { CityName } from '../../types/city-name';
+import { useAppSelector } from '../../hooks';
+import { selectOffersFetchingStatus } from '../../store/offers-data/selectors';
+import LoadingPage from '../../pages/loading-page/loading-page';
 
 type OffersListProps = {
   currentLocation: CityName;
@@ -18,6 +21,7 @@ function OffersList ({currentOffers, currentLocation}: OffersListProps): JSX.Ele
   const [selectedOfferCardId, setSelectedOfferCardId] = useState<string | null>(null);
   const [activeSorting, setActiveSorting] = useState<TSorting>(DEFAULT_SORTING_OPTION);
   const locationForMap = currentOffers[0].city;
+  const fetchingStatus = useAppSelector(selectOffersFetchingStatus);
 
   function handleCardHover (offerId: string | null) {
     setSelectedOfferCardId(offerId);
@@ -38,6 +42,7 @@ function OffersList ({currentOffers, currentLocation}: OffersListProps): JSX.Ele
         <b className="places__found">{currentOffers.length} place{addPluralEnding(currentOffers.length)} to stay in {currentLocation}</b>
         <Sorting activeSorting={activeSorting} onSortingOptionClick={handleSortingChange}/>
         <div className="cities__places-list places__list tabs__content">
+          {fetchingStatus === RequestStatus.Loading && <LoadingPage />}
           {sortedOffers.map((offer) => (
             <OfferCard
               key={offer.id}

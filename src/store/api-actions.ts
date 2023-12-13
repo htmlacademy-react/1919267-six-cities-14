@@ -8,6 +8,7 @@ import { APIRoute, AuthorizationStatus, HttpStatus } from '../const';
 import { requireAuthorization, setActiveOffer } from './action';
 import { setToken, dropToken } from '../services/token';
 import { ReviewData, Review } from '../types/review';
+import { UpdateFavoriteStatus } from '../types/update-favorite-status';
 
 type Extra = {
   dispatch: AppDispatch;
@@ -52,9 +53,17 @@ export const sendReview = createAsyncThunk<Review, ReviewData, Extra>(
 );
 
 export const fetchFavoriteOffers = createAsyncThunk<Offer[], undefined, Extra>(
-  'offers/fetchFavoriteOffers',
+  'favorites/fetchFavoriteOffers',
   async (_arg, {extra: api}) => {
     const {data} = await api.get<Offer[]>(APIRoute.Favorite);
+    return data;
+  }
+);
+
+export const updateFavoriteStatus = createAsyncThunk<Offer, UpdateFavoriteStatus, Extra>(
+  'favorites/updateFavoriteStatus',
+  async ({id, status}, {extra: api}) => {
+    const {data} = await api.post<Offer>(`${APIRoute.Favorite}/${id}/${status}`);
     return data;
   }
 );

@@ -1,5 +1,6 @@
 
 import { Host } from '../../types/host';
+import { formatTime } from '../../utils/common';
 import { getRatingWidth } from '../../utils/offer';
 
 type ReviewItemProps = {
@@ -11,8 +12,6 @@ type ReviewItemProps = {
 
 function ReviewItem({rating, user, comment, date}: ReviewItemProps):JSX.Element {
   const commentDate = new Date(date);
-  const month = commentDate.toLocaleString('en-US',{month: 'long'});
-  const year = commentDate.getFullYear();
   const dateTime = commentDate.toDateString();
 
   return(
@@ -31,7 +30,7 @@ function ReviewItem({rating, user, comment, date}: ReviewItemProps):JSX.Element 
           </div>
         </div>
         <p className="reviews__text">{comment}</p>
-        <time className="reviews__time" dateTime={dateTime}>{month}{' '}{year}</time>
+        <time className="reviews__time" dateTime={dateTime}>{formatTime(commentDate)}</time>
       </div>
     </li>
   );

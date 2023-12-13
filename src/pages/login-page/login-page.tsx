@@ -1,29 +1,42 @@
-import { FormEvent, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { FormEvent, useEffect, useState, useMemo } from 'react';
 import Logo from '../../components/logo/logo';
 import { Helmet } from 'react-helmet-async';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { useNavigate } from 'react-router-dom';
-import { loginAction } from '../../store/api-actions';
-import { AppRoute } from '../../const';
+import { fetchFavoriteOffers, login } from '../../store/api-actions';
+import { AppRoute, AuthorizationStatus, CityMap, RequestStatus } from '../../const';
+import { selectAuthorizationStatus, selectSendingStatus } from '../../store/user-data/selectors';
+import styles from './login-page.module.css';
+import { getRandomArrayElement } from '../../utils/common';
+import { setCurrentCity } from '../../store/offers-data/offers-data';
 
 function LoginPage(): JSX.Element {
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
+  const [isEmailFilled, setEmailFilled] = useState(false);
+  const [isPasswordFilled, setPasswordFilled] = useState(false);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
   const checkPassword = /^(?=.*[A-Za-zА-Яа-я])(?=.*\d).+$/.test(password);
   const checkEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  const currentCity = useAppSelector((state) => state.currentCity);
+  const EMAIL_ERROR_TEXT = 'Please enter a correct email address.';
+  const PASSWORD_ERROR_TEXT =
+  'Password must contain at least one letter and one digit. Please enter a correct password!';
+  const isValid = checkEmail && checkPassword;
 
-  function handleSubmit (evt: FormEvent<HTMLFormElement>) {
+  const authorizationStatus = useAppSelector(selectAuthorizationStatus);
+  const sendingStatus = useAppSelector(selectSendingStatus);
+  const randomCity = useMemo(() => getRandomArrayElement(Object.values(CityMap)), []);
+
+  function handleFormSubmit (evt: FormEvent<HTMLFormElement>) {
     evt.preventDefault();
+    if (!isValid) {
+      return;
+    }
 
-    dispatch(loginAction({
-      login: email,
-      password: password
-    }));
-    navigate(AppRoute.Root);
+    dispatch(login({email, password}))
+      .then(() => dispatch(fetchFavoriteOffers()));
   }
 
   function onChangeEmailHandler (evt: React.ChangeEvent<HTMLInputElement>) {
@@ -39,6 +52,18 @@ function LoginPage(): JSX.Element {
       setPassword(value);
     }
   }
+
+  function onRandomCityClickHandler (evt: React.MouseEvent<HTMLAnchorElement>) {
+    evt.preventDefault();
+    dispatch(setCurrentCity(randomCity));
+    navigate(AppRoute.Root);
+  }
+
+  useEffect(() => {
+    if (authorizationStatus === AuthorizationStatus.Auth) {
+      navigate(AppRoute.Root);
+    }
+  }, [authorizationStatus, navigate]);
 
   return (
     <div className="page page--gray page--login">
@@ -63,38 +88,59 @@ function LoginPage(): JSX.Element {
               className="login__form form"
               action="#"
               method="post"
-              onSubmit={handleSubmit}
+              onSubmit={handleFormSubmit}
             >
               <div className="login__input-wrapper form__input-wrapper">
                 <label className="visually-hidden">E-mail</label>
                 <input
                   onChange={onChangeEmailHandler}
+                  onBlur={() => setEmailFilled(true)}
                   className="login__input form__input"
                   type="email"
                   name="email"
                   placeholder="Email"
+                  value={email}
                   required
                 />
+                {isEmailFilled && !checkEmail && (
+                  <div className={styles.error}>{EMAIL_ERROR_TEXT}</div>
+                )}
               </div>
               <div className="login__input-wrapper form__input-wrapper">
                 <label className="visually-hidden">Password</label>
                 <input
                   onChange={onChangePasswordlHandler}
+                  onBlur={() => setPasswordFilled(true)}
                   className="login__input form__input"
                   type="password"
                   name="password"
                   placeholder="Password"
+                  value={password}
                   required
                 />
+                {isPasswordFilled && !checkPassword && (
+                  <div className={styles.error}>{PASSWORD_ERROR_TEXT}</div>
+                )}
               </div>
-              <button className="login__submit form__submit button" type="submit" disabled={!checkPassword || !checkEmail}>Sign in</button>
+              <button
+                className="login__submit form__submit button"
+                type="submit" disabled={!checkPassword || !checkEmail}
+              >
+                {sendingStatus === RequestStatus.Loading
+                  ? 'Logging in...'
+                  : 'Sign in'}
+              </button>
             </form>
           </section>
           <section className="locations locations--login locations--current">
             <div className="locations__item">
-              <Link to={AppRoute.Root} className="locations__item-link">
-                <span>{currentCity}</span>
-              </Link>
+              <a
+                href="#"
+                className="locations__item-link"
+                onClick={onRandomCityClickHandler}
+              >
+                <span>{randomCity.name}</span>
+              </a>
             </div>
           </section>
         </div>

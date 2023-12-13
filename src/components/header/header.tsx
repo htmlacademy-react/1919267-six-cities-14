@@ -3,17 +3,20 @@ import { AppRoute } from '../../const';
 import Logo from '../logo/logo';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { checkAuthorizationStatus } from '../../utils/common';
-import { logoutAction } from '../../store/api-actions';
+import { logout } from '../../store/api-actions';
+import { selectAuthorizationStatus, selectUserData } from '../../store/user-data/selectors';
+import { memo } from 'react';
+import { selectFavorites } from '../../store/favorites-data/selectors';
 
-function Header(): JSX.Element {
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
-  const favorites = useAppSelector((state) => state.favoriteOffers);
+function Header_(): JSX.Element {
+  const authorizationStatus = useAppSelector(selectAuthorizationStatus);
+  const favorites = useAppSelector(selectFavorites);
   const isLogged = checkAuthorizationStatus(authorizationStatus);
-  const user = useAppSelector((state) => state.userData);
+  const user = useAppSelector(selectUserData);
   const dispatch = useAppDispatch();
 
   function onLogoutClickHandler() {
-    dispatch(logoutAction());
+    dispatch(logout());
   }
 
   return (
@@ -65,4 +68,4 @@ function Header(): JSX.Element {
   );
 }
 
-export default Header;
+export const Header = memo(Header_);

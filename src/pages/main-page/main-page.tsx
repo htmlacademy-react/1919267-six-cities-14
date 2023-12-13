@@ -1,14 +1,16 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { Helmet } from 'react-helmet-async';
-import Header from '../../components/header/header';
+import {Header} from '../../components/header/header';
 import LocationsList from '../../components/locations-list/locations-list';
 import OffersList from '../../components/offers-list/offers-list';
 import NoOffers from '../../components/no-offers/no-offers';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchOffers } from '../../store/api-actions';
-import Loading from '../../components/loading/loading';
-import { AuthorizationStatus } from '../../const';
-
+import { RequestStatus } from '../../const';
+import { selectCurrentCity, selectOffers, selectOffersFetchingStatus } from '../../store/offers-data/selectors';
+import { City } from '../../types/city';
+import { setCurrentCity } from '../../store/offers-data/offers-data';
+import LoadingPage from '../loading-page/loading-page';
 
 function MainPage(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -17,14 +19,26 @@ function MainPage(): JSX.Element {
     dispatch(fetchOffers());
   }, [dispatch]);
 
-  const currentLocation = useAppSelector((state) => state.currentCity);
-  const offers = useAppSelector((state) => state.offers);
-  const currentOffers = offers.filter((offer) => offer.city.name === currentLocation);
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
-  const isLoading = useAppSelector((state) => state.isLoading);
+  const currentLocation = useAppSelector(selectCurrentCity);
+  const offers = useAppSelector(selectOffers);
+  const currentOffers = useMemo(
+    () => offers.filter((offer) => offer.city.name === currentLocation.name),
+    [currentLocation.name, offers]);
+  const fetchingStatus = useAppSelector(selectOffersFetchingStatus);
 
-  if (authorizationStatus === AuthorizationStatus.Unknown || isLoading) {
-    return <Loading />;
+  const handleSelectedCity = useCallback(
+    (city: City) => {
+      dispatch(setCurrentCity(city));
+    },
+    [dispatch]
+  );
+
+  useEffect(() => {
+    dispatch(fetchOffers());
+  }, [dispatch, currentLocation]);
+
+  if (fetchingStatus === RequestStatus.Loading) {
+    return <LoadingPage />;
   }
 
   return (
@@ -37,14 +51,17 @@ function MainPage(): JSX.Element {
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
           <section className="locations container">
-            <LocationsList />
+            <LocationsList
+              currentCity={currentLocation.name}
+              onSelectedCityClick={handleSelectedCity}
+            />
           </section>
         </div>
         <div className="cities">
           {
-            currentOffers.length
-              ? <OffersList currentLocation={currentLocation} currentOffers={currentOffers}/>
-              : <NoOffers currentLocation={currentLocation}/>
+            fetchingStatus === RequestStatus.Success && currentOffers.length
+              ? <OffersList currentLocation={currentLocation.name} currentOffers={currentOffers}/>
+              : <NoOffers currentLocation={currentLocation.name}/>
           }
         </div>
       </main>

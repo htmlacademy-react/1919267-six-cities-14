@@ -1,28 +1,26 @@
 import { useState } from 'react';
-import Header from '../../components/header/header';
+import {Header} from '../../components/header/header';
 import { Helmet } from 'react-helmet-async';
-import { Offer } from '../../types/offer';
 import { addPluralEnding, capitalizeFirstLetter } from '../../utils/common';
 import { getRatingWidth } from '../../utils/offer';
-import ReviewForm from '../../components/review-form/review-form';
 import Map from '../../components/map/map';
-import { Review } from '../../types/review';
 import ReviewsList from '../../components/reviews-list/reviews-list';
 import NearbyPlaces from '../../components/nearby-places/nearby-places';
 import { useLoadOfferInfo } from '../../hooks/use-load-offer-info';
-import Loading from '../../components/loading/loading';
+import { useLoadNearbyOffers } from '../../hooks/use-load-nearby-offers';
+import { MAX_NEARBY_OFFERS_COUNT } from '../../const';
+import { useParams } from 'react-router';
+import LoadingPage from '../loading-page/loading-page';
 
-type OfferPageProps = {
-  reviews: Review[];
-  nearbyOffers: Offer[];
-}
-
-function OfferPage({reviews, nearbyOffers}: OfferPageProps): JSX.Element {
-  const [chosenCard, setChosenCard] = useState<number | null>(null);
+function OfferPage(): JSX.Element {
+  const offerId = useParams()?.offerId;
+  const [chosenCard, setChosenCard] = useState<string| null>(null);
   const {offerInfo, isOfferInfoLoading} = useLoadOfferInfo();
+  const {nearbyOffers, isNearbyDataLoading} = useLoadNearbyOffers();
+  const nearbyOffersToRender = nearbyOffers.slice(0, MAX_NEARBY_OFFERS_COUNT);
 
-  if (isOfferInfoLoading) {
-    return (<Loading />);
+  if (isOfferInfoLoading || isNearbyDataLoading) {
+    return (<LoadingPage />);
   }
 
   return (
@@ -116,15 +114,12 @@ function OfferPage({reviews, nearbyOffers}: OfferPageProps): JSX.Element {
                   </p>
                 </div>
               </div>
-              <section className="offer__reviews reviews">
-                <ReviewsList reviews={reviews}/>
-                <ReviewForm />
-              </section>
+              <ReviewsList offerId={offerId}/>
             </div>
           </div>
           <Map city={offerInfo?.city} offers={nearbyOffers} hoveredOfferId={chosenCard} className='offer__map'/>
         </section>
-        <NearbyPlaces nearbyPlaces={nearbyOffers} setChosenCard={setChosenCard}/>
+        <NearbyPlaces nearbyPlaces={nearbyOffersToRender} setChosenCard={setChosenCard}/>
       </main>
     </div>
   );

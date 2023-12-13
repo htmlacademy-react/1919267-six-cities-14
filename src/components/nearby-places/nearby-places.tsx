@@ -3,7 +3,7 @@ import OfferCard from '../offer-card/offer-card';
 
 type NearbyPlacesProps = {
   nearbyPlaces: Offer[];
-  setChosenCard: (id: number | null) => void;
+  setChosenCard: (id: string | null) => void;
 }
 
 function NearbyPlaces({nearbyPlaces, setChosenCard}: NearbyPlacesProps): JSX.Element {

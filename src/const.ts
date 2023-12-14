@@ -1,3 +1,5 @@
+import { TSizeMap } from './types/size';
+
 const Settings = {
   PlacesCount: 5
 } as const;
@@ -94,6 +96,16 @@ const enum FavoriteStatus {
   Deleted = 0
 }
 
+const BookmarkSizeMap: TSizeMap = {
+  small: {width: '18', height: '19'},
+  large: {width: '31', height: '33'}
+} as const;
+
+const ImageSizeMap: TSizeMap = {
+  small: { width: '150', height: '110'},
+  large: { width: '260', height: '200'},
+} as const;
+
 export{
   Settings,
   AppRoute,
@@ -115,5 +127,7 @@ export{
   NameSpace,
   HttpStatus,
   CityMap,
-  FavoriteStatus
+  FavoriteStatus,
+  BookmarkSizeMap,
+  ImageSizeMap
 };

@@ -9,7 +9,7 @@ export type Review = {
 }
 
 export type ReviewData = {
-  id: string | undefined;
+  id: string;
   comment: string;
   rating: number;
 }

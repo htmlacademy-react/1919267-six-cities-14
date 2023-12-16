@@ -41,6 +41,14 @@ export const fetchReviews = createAsyncThunk<Review[], Offer['id'], Extra>(
   }
 );
 
+export const fetchNearbyOffers = createAsyncThunk<Offer[], Offer['id'], Extra>(
+  'nearbyOffers/fetchNearbyOffers',
+  async (offerId, {extra: api}) => {
+    const {data} = await api.get<Offer[]>(`${APIRoute.Offers}/${offerId}${APIRoute.NearbyOffers}`);
+    return data;
+  }
+);
+
 export const sendReview = createAsyncThunk<Review, ReviewData, Extra>(
   'offer/sendReview',
   async ({comment, rating, id}, {extra: api}) => {

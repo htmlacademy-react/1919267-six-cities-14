@@ -79,7 +79,8 @@ enum NameSpace {
   OfferData = 'OFFER_DATA',
   ReviewData = 'REVIEW_DATA',
   UserData = 'USER_DATA',
-  FavoritesData = 'FAVORITES_DATA'
+  FavoritesData = 'FAVORITES_DATA',
+  NearbyOffersData = 'NEARBY_OFFERS_DATA'
 }
 
 const HttpStatus = {

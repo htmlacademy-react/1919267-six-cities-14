@@ -10,7 +10,7 @@ import { selectReviews } from '../../store/reviews-data/selectors';
 import { selectAuthorizationStatus } from '../../store/user-data/selectors';
 
 type ReviewsListProps = {
-  offerId: Offer['id'] | undefined ;
+  offerId: Offer['id'];
 }
 
 function ReviewsList({offerId}: ReviewsListProps): JSX.Element {
@@ -21,15 +21,20 @@ function ReviewsList({offerId}: ReviewsListProps): JSX.Element {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (offerId) {
-      dispatch(fetchReviews(offerId));
-    }
+    dispatch(fetchReviews(offerId));
   }, [dispatch, offerId]);
 
   return(
     <section className="offer__reviews reviews">
       <h2 className="reviews__title">
-        Reviews &middot; <span className="reviews__amount">{MAX_SHOWN_REVIEWS} of {reviews.length}</span>
+        Reviews &middot;
+        <span className="reviews__amount">
+          {
+            reviews.length > 10
+              ? `${MAX_SHOWN_REVIEWS} of ${reviews.length}`
+              : reviews.length
+          }
+        </span>
       </h2>
       <ul className="reviews__list">
         {reviewsToShow.map((item: Review) => <ReviewItem key={item.id} {...item}/>)}

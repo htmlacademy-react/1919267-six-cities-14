@@ -15,10 +15,6 @@ import LoadingPage from '../loading-page/loading-page';
 function MainPage(): JSX.Element {
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    dispatch(fetchOffers());
-  }, [dispatch]);
-
   const currentLocation = useAppSelector(selectCurrentCity);
   const offers = useAppSelector(selectOffers);
   const currentOffers = useMemo(

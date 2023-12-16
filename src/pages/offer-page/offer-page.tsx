@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {Header} from '../../components/header/header';
 import { Helmet } from 'react-helmet-async';
 import { addPluralEnding, capitalizeFirstLetter } from '../../utils/common';
@@ -6,20 +6,37 @@ import { getRatingWidth } from '../../utils/offer';
 import Map from '../../components/map/map';
 import ReviewsList from '../../components/reviews-list/reviews-list';
 import NearbyPlaces from '../../components/nearby-places/nearby-places';
-import { useLoadOfferInfo } from '../../hooks/use-load-offer-info';
 import { useLoadNearbyOffers } from '../../hooks/use-load-nearby-offers';
-import { MAX_NEARBY_OFFERS_COUNT } from '../../const';
+import { MAX_NEARBY_OFFERS_COUNT, RequestStatus } from '../../const';
 import { useParams } from 'react-router';
 import LoadingPage from '../loading-page/loading-page';
+import BookmarkButton from '../../components/bookmark-button/bookmark-button';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { selectActiveOffer, selectOfferFetchingStatus } from '../../store/offer-data/selectors';
+import { fetchActiveOffer } from '../../store/api-actions';
+import { dropActiveOffer } from '../../store/offer-data/offer-data';
 
 function OfferPage(): JSX.Element {
   const offerId = useParams()?.offerId;
+  const dispatch = useAppDispatch();
   const [chosenCard, setChosenCard] = useState<string| null>(null);
-  const {offerInfo, isOfferInfoLoading} = useLoadOfferInfo();
+  const offerInfo = useAppSelector(selectActiveOffer);
+  const isOfferInfoLoading = useAppSelector(selectOfferFetchingStatus);
   const {nearbyOffers, isNearbyDataLoading} = useLoadNearbyOffers();
   const nearbyOffersToRender = nearbyOffers.slice(0, MAX_NEARBY_OFFERS_COUNT);
 
-  if (isOfferInfoLoading || isNearbyDataLoading) {
+  useEffect(() => {
+    if (offerId) {
+      dispatch(fetchActiveOffer(offerId));
+      //dispatch(fetchNearPlaces(offerId));
+    }
+
+    return () => {
+      dispatch(dropActiveOffer());
+    };
+  }, [offerId, dispatch]);
+
+  if (isOfferInfoLoading === RequestStatus.Loading || isNearbyDataLoading) {
     return (<LoadingPage />);
   }
 
@@ -56,12 +73,7 @@ function OfferPage(): JSX.Element {
                 <h1 className="offer__name">
                   {offerInfo?.title}
                 </h1>
-                <button className="offer__bookmark-button button" type="button">
-                  <svg className="offer__bookmark-icon" width="31" height="33">
-                    <use xlinkHref="#icon-bookmark"></use>
-                  </svg>
-                  <span className="visually-hidden">To bookmarks</span>
-                </button>
+                {offerInfo && <BookmarkButton id={offerInfo.id} isFavorite={offerInfo.isFavorite} block={'offer'} size={'large'}/>}
               </div>
               <div className="offer__rating rating">
                 <div className="offer__stars rating__stars">

@@ -7,17 +7,20 @@ import NotFoundPage from '../../pages/not-found-page/not-found-page';
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import PrivateRoute from '../private-route/private-route';
 import { HelmetProvider } from 'react-helmet-async';
-import { store } from '../../store';
-import { fetchFavoriteOffers, fetchOffers } from '../../store/api-actions';
+import { checkAuth, fetchFavoriteOffers } from '../../store/api-actions';
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { selectAuthorizationStatus } from '../../store/user-data/selectors';
 
-store.dispatch(fetchOffers());
-
 function App(): JSX.Element {
   const authorizationStatus = useAppSelector(selectAuthorizationStatus);
+
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(checkAuth());
+  }, [dispatch]);
+
   useEffect(() => {
     if (authorizationStatus === AuthorizationStatus.Auth) {
       dispatch(fetchFavoriteOffers());

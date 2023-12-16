@@ -44,3 +44,13 @@ export type TFavoritesData = {
   favorites: Offer[];
   favoritesFetchingStatus: RequestStatus;
 }
+
+export type TOfferData = {
+  activeOffer: null | Offer;
+  offerFetchingStatus: RequestStatus;
+}
+
+export type TNearbyOffersData = {
+  nearbyOffers: Offer[];
+  nearbyOffersFetchingStatus: RequestStatus;
+}

@@ -14,7 +14,7 @@ const ratingMap = {
 };
 
 type ReviewFormProps = {
-  id: Offer['id'] | undefined;
+  id: Offer['id'];
 }
 
 function ReviewForm ({id}: ReviewFormProps): JSX.Element {

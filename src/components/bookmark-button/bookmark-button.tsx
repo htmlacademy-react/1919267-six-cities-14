@@ -4,15 +4,18 @@ import { useNavigate } from 'react-router-dom';
 import { fetchFavoriteOffers, updateFavoriteStatus } from '../../store/api-actions';
 import { Offer } from '../../types/offer';
 import { selectAuthorizationStatus } from '../../store/user-data/selectors';
-import { AppRoute, AuthorizationStatus } from '../../const';
+import { AppRoute, AuthorizationStatus, BookmarkSizeMap } from '../../const';
 import { useState } from 'react';
+import { TSizeMap } from '../../types/size';
 
 type BookmarkButtonProps = {
   id: Offer['id'];
   isFavorite: boolean;
+  block: string;
+  size?: keyof TSizeMap;
 }
 
-function BookmarkButton ({isFavorite, id}: BookmarkButtonProps):JSX.Element {
+function BookmarkButton ({isFavorite, id, block, size = 'small'}: BookmarkButtonProps):JSX.Element {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const authorizationStatus = useAppSelector(selectAuthorizationStatus);
@@ -34,13 +37,16 @@ function BookmarkButton ({isFavorite, id}: BookmarkButtonProps):JSX.Element {
 
   return (
     <button
-      className={cn('place-card__bookmark-button', 'button', {
-        'place-card__bookmark-button--active': favoriteStatus && isAuthorized,
+      className={cn(`${block}__bookmark-button`, 'button', {
+        [`${block}__bookmark-button--active`]: favoriteStatus && isAuthorized,
       })}
       type="button"
       onClick={onButtonClickHandler}
     >
-      <svg className="place-card__bookmark-icon" width="18" height="19">
+      <svg
+        className={`${block}__bookmark-icon`}
+        {...BookmarkSizeMap[size]}
+      >
         <use xlinkHref="#icon-bookmark"></use>
       </svg>
       <span className="visually-hidden">{isFavorite ? 'In bookmarks' : 'To bookmarks'}</span>

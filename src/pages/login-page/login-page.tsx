@@ -9,6 +9,7 @@ import { selectAuthorizationStatus, selectSendingStatus } from '../../store/user
 import styles from './login-page.module.css';
 import { getRandomArrayElement } from '../../utils/common';
 import { setCurrentCity } from '../../store/offers-data/offers-data';
+import { setSendingStatus } from '../../store/user-data/user-data';
 
 function LoginPage(): JSX.Element {
   const [password, setPassword] = useState('');
@@ -64,6 +65,15 @@ function LoginPage(): JSX.Element {
       navigate(AppRoute.Root);
     }
   }, [authorizationStatus, navigate]);
+
+  useEffect(() => {
+    if (sendingStatus === RequestStatus.Success && email && password) {
+      dispatch(setSendingStatus(RequestStatus.Idle));
+      setEmail('');
+      setPassword('');
+      navigate(AppRoute.Root);
+    }
+  }, [dispatch, sendingStatus, email, password, navigate]);
 
   return (
     <div className="page page--gray page--login">

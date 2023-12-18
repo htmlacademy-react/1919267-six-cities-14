@@ -8,6 +8,7 @@ import { Offer } from '../types/offer';
 import { City } from '../types/city';
 import { Review } from '../types/review';
 import { Host } from '../types/host';
+import { TUser } from '../types/user';
 
 const Location: Location = {
   latitude: Number(faker.address.latitude()),
@@ -72,3 +73,11 @@ export const makeFakeReview = (): Review => ({
   comment: faker.lorem.text(60),
   date: String(new Date())
 } as Review);
+
+export const makeFakeUser = (): TUser => ({
+  id: faker.random.alphaNumeric(20),
+  email: faker.internet.email(),
+  token: faker.random.alphaNumeric(20),
+  avatarUrl: faker.internet.avatar(),
+  isPro: faker.datatype.boolean()
+} as TUser);

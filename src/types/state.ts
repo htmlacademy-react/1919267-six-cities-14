@@ -31,7 +31,7 @@ export type TReviewsData = {
 export type TUserData = {
   user: TUser | null;
   authorizationStatus: AuthorizationStatus;
-  sendingStatus: RequestStatus;
+  loginSendingStatus: RequestStatus;
 }
 
 export type TOffersData = {

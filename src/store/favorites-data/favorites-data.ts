@@ -25,9 +25,21 @@ export const favoritesData = createSlice({
         state.favoritesFetchingStatus = RequestStatus.Error;
       })
       .addCase(updateFavoriteStatus.fulfilled, (state, action) => {
-        state.favorites = state.favorites.filter(
-          (offer) => offer.id !== action.payload.id
-        );
+        const toBeRemoved = action.meta.arg.status === 0;
+        const {id, isFavorite} = action.payload;
+
+        state.favorites.forEach((item) => {
+          if (item.id === id) {
+            item.isFavorite = isFavorite;
+          }
+        });
+
+        if (toBeRemoved) {
+          state.favorites = state.favorites.filter(
+            (item) => item.id !== action.payload.id);
+        } else {
+          state.favorites = [...state.favorites, action.payload];
+        }
       })
       .addCase(logout.fulfilled, (state) => {
         state.favorites = [];

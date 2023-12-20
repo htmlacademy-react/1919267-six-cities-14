@@ -4,11 +4,11 @@ import { AxiosError, AxiosInstance } from 'axios';
 import { Offer } from '../types/offer';
 import { TLoginData } from '../types/login-data';
 import { TUser } from '../types/user';
-import { APIRoute, AuthorizationStatus, HttpStatus } from '../const';
-import { requireAuthorization, setActiveOffer } from './action';
+import { APIRoute, AppRoute, HttpStatus } from '../const';
 import { setToken, dropToken } from '../services/token';
 import { ReviewData, Review } from '../types/review';
 import { UpdateFavoriteStatus } from '../types/update-favorite-status';
+import { redirectToRoute } from './action';
 
 type Extra = {
   dispatch: AppDispatch;
@@ -26,9 +26,8 @@ export const fetchOffers = createAsyncThunk<Offer[], undefined, Extra>(
 
 export const fetchActiveOffer = createAsyncThunk<Offer, Offer['id'], Extra>(
   'offer/fetchActiveOffer',
-  async (offerId, {extra: api, dispatch}) => {
+  async (offerId, {extra: api}) => {
     const {data} = await api.get<Offer>(`${APIRoute.Offers}/${offerId}`);
-    dispatch(setActiveOffer(data));
     return data;
   }
 );
@@ -86,10 +85,11 @@ export const checkAuth = createAsyncThunk<TUser, undefined, Extra>(
 
 export const login = createAsyncThunk<TUser, TLoginData, Extra>(
   'user/login',
-  async ({email, password}, {extra: api, rejectWithValue}) => {
+  async ({email, password}, {extra: api, rejectWithValue, dispatch}) => {
     try {
       const {data} = await api.post<TUser>(APIRoute.Login, {email, password});
       setToken(data.token);
+      dispatch(redirectToRoute(AppRoute.Root));
       return data;
     } catch (error) {
       if (error instanceof AxiosError) {
@@ -107,9 +107,8 @@ export const login = createAsyncThunk<TUser, TLoginData, Extra>(
 
 export const logout = createAsyncThunk<void, undefined, Extra>(
   'user/logout',
-  async (_arg, {dispatch, extra: api}) => {
+  async (_arg, {extra: api}) => {
     await api.delete(APIRoute.Logout);
     dropToken();
-    dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
   },
 );

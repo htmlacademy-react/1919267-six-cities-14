@@ -1,4 +1,6 @@
 import faker from 'faker';
+import { ThunkDispatch } from 'redux-thunk';
+import {Action} from 'redux';
 import { CityName } from '../types/city-name';
 import { Location } from '../types/location';
 import { CityMap } from '../const';
@@ -9,6 +11,13 @@ import { City } from '../types/city';
 import { Review } from '../types/review';
 import { Host } from '../types/host';
 import { TUser } from '../types/user';
+import { State } from '../types/state';
+import { createApi } from '../services/api';
+
+export type AppThunkDispatch = ThunkDispatch<State, ReturnType<typeof createApi>, Action>;
+
+export const extractActionTypes =
+  (actions: Action<string>[]) => actions.map(({ type }) => type);
 
 const Location: Location = {
   latitude: Number(faker.address.latitude()),
